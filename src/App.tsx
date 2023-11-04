@@ -1,7 +1,8 @@
+import { Typography } from 'antd';
 import React from 'react';
 
 const App: React.FC = () => {
-  return <div>App</div>;
+  return <Typography.Title>App</Typography.Title>;
 };
 
 export default App;
