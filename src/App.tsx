@@ -1,8 +1,15 @@
-import { Typography } from 'antd';
 import React from 'react';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import { Home } from './pages';
 
 const App: React.FC = () => {
-  return <Typography.Title>App</Typography.Title>;
+  return (
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<Home />} />
+      </Routes>
+    </BrowserRouter>
+  );
 };
 
 export default App;
