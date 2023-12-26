@@ -1,0 +1,11 @@
+.layout-container {
+  display: flex;
+  flex-direction: column;
+  .body-container {
+    display: flex;
+    .body-content {
+      display: flex;
+      margin: 24px;
+    }
+  }
+}
