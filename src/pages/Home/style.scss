@@ -1,3 +1,65 @@
-.home {
-  background-color: #fff;
+.mainHomePage {
+  display: flex;
+  justify-content: space-between;
+  align-items: stretch;
+  height: 100vh;
+  background-color: #fce4ec;
+  /* Màu hồng nhạt cho nền chung */
+}
+
+.homeleftside {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.banner-image {
+  max-width: 100%;
+  max-height: 100vh;
+  object-fit: cover;
+  filter: grayscale(20%);
+  /* Hiệu ứng mờ đen và trắng */
+  transition: filter 0.5s ease-in-out;
+  /* Hiệu ứng chuyển đổi mờ đen và trắng */
+}
+
+.banner-image:hover {
+  filter: grayscale(0);
+  /* Khi hover, hình ảnh sẽ trở lại màu */
+}
+
+.homerightside {
+  flex: 1;
+  display: flex;
+  align-items: center;
+}
+
+.home-content-wrapper {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 20px;
+  background-color: #fce4ec;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+  width: 100%;
+  transition: background-color 0.5s ease-in-out;
+  /* Hiệu ứng chuyển đổi màu nền */
+}
+
+.home-content-wrapper:hover {
+  background-color: #eec7d5;
+  /* Khi hover, nền sẽ chuyển sang màu hồng */
+}
+
+.homerightside button {
+  background-color: rgba(244, 133, 133, 0.874);
+}
+
+h1 {
+  color: #0c0e10;
+}
+
+p {
+  color: #333;
 }

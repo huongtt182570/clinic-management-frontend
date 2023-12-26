@@ -1,0 +1,89 @@
+// style.scss
+
+.mainRegisterPage {
+    display: flex;
+    justify-content: space-between;
+    align-items: stretch;
+    height: 100vh;
+}
+
+.leftside {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.register-container {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.register-header {
+    text-align: center;
+    margin-bottom: 20px;
+
+}
+
+h1,
+h3 {
+    color: #ed776a;
+}
+
+.tabs-container {
+    width: 80%;
+    max-width: 400px;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    padding: 20px;
+    /* Add padding for better visual appearance */
+    background-color: #f7f7f7;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+h3 {
+    width: 100%;
+    text-align: left;
+    /* Align input labels to the left */
+    margin-bottom: 5px;
+}
+
+Input {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    box-sizing: border-box;
+    border: 1px solid #ddd;
+    /* Add a border to input fields */
+    border-radius: 5px;
+}
+
+button {
+    width: 100%;
+    padding: 10px;
+    background-color: #ed776a;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 10px;
+    /* Add space between the input fields and the button */
+}
+
+p {
+    margin-top: 10px;
+    margin-bottom: 0;
+}
+
+img {
+    width: 100%;
+    height: auto;
+}
