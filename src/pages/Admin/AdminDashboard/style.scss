@@ -1,0 +1,19 @@
+.site-layout {
+    margin-left: 80px;
+    transition: margin-left 0.3s;
+    width: 100px;
+}
+
+.site-layout .site-layout-background {
+    background: rgb(63, 132, 141);
+}
+
+.tab {
+    height: 32px;
+    background: rgba(255, 255, 255, 0.2);
+    margin: 16px;
+}
+
+sidebar {
+    margin-top: 20px;
+}

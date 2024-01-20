@@ -1,0 +1,35 @@
+// style.scss (của Headers.tsx)
+.headers {
+    background-color: #577da0; // Màu nền Header
+    // padding: 16px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); // Hiệu ứng bóng
+    color: #fff; // Màu chữ
+}
+
+.clinics {
+    font-size: 23px;
+    font-weight: bold;
+    margin-left: 15px;
+}
+
+.tabs-headers {
+    display: flex;
+    align-items: center;
+}
+
+.tab-header {
+    color: #fff;
+    text-decoration: none;
+    margin-right: 16px;
+    padding: 8px 16px;
+    border-radius: 4px;
+    background-color: #41aca1; // Màu nền tab "Log out"
+    transition: background-color 0.3s ease; // Hiệu ứng chuyển động
+
+    &:hover {
+        background-color: #237804; // Màu nền tab "Log out" khi hover
+    }
+}
