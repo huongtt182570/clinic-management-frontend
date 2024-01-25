@@ -38,10 +38,13 @@ const router = createBrowserRouter([
         path: 'admin/dashboard', // Thêm route cho trang dashboard của admin
         element: <AdminDashboard />,
       },
+<<<<<<< HEAD
       {
         path: '/add-doctor', // Thêm route cho trang dashboard của admin
         element: <AddDoctor />,
       },
+=======
+>>>>>>> 570a2368404a6a1eaca3194fb6ae2022c7de8e68
     ] as AppRoute[], //Ép kiểu routes thành AppRoute với thuộc tính userType
   }]);
 
