@@ -18,10 +18,11 @@ function getItem(
 }
 const Navigation = () => {
   const items: MenuItem[] = [
-    getItem(<Link to={'/'}>Home</Link>, '1', <UserAddOutlined />),
-    getItem(<Link to={`/doctor`}>Doctor</Link>, 'link', <LinkOutlined />),
+    // getItem(<Link to={'/'}>Home</Link>, '1', <UserAddOutlined />),
+    getItem(<Link to={`/admin`}>Admin</Link>, 'link3', <LinkOutlined />),
+    // getItem(<Link to={`/login`}>Login</Link>, 'link4', <LinkOutlined />),
     getItem(
-      <Link to={`/appointment`}> Appointment</Link>,
+      <Link to={`/doctor`}> Doctor</Link>,
       'link1',
       <LinkOutlined />
     ),

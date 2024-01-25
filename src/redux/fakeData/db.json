@@ -1,0 +1,19 @@
+{
+    "pendingAppointments": [
+        {
+            "id": 1,
+            "patientName": "Bệnh nhân 1",
+            "age": 30,
+            "medicalHistory": "Cảm lạnh",
+            "timeSlot": "08:00 - 09:00"
+        },
+        {
+            "id": 2,
+            "patientName": "Bệnh nhân 2",
+            "age": 45,
+            "medicalHistory": "Huyết áp cao",
+            "timeSlot": "09:00 - 10:00"
+        }
+    ],
+    "acceptedAppointments": []
+}

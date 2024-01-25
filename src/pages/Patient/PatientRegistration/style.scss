@@ -1,0 +1,78 @@
+// style.scss
+
+.mainRegisterPage {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    background-image: linear-gradient(to right, #3494e6, #ec6ead); // Gradient màu nền
+}
+
+.register-container {
+    width: 400px; // Độ rộng của form
+    background-color: rgba(255, 255, 255, 0.8);
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease;
+
+    &:hover {
+        transform: scale(1.02);
+    }
+
+    .register-header {
+        text-align: center;
+        margin-bottom: 20px;
+
+        h1 {
+            font-size: 24px;
+            color: rgb(49, 54, 107); // Màu chữ trắng trên nền màu
+        }
+    }
+
+    .tabs-container {
+        form {
+            margin-top: 20px;
+            padding: 20px;
+            border: 1px solid #d9d9d9;
+            border-radius: 8px;
+            background-color: rgba(255, 255, 255, 0.9);
+
+            h3 {
+                font-size: 16px;
+                color: rgb(55, 51, 112); // Màu chữ trắng trên nền màu
+                margin-bottom: 8px;
+            }
+
+            input {
+                width: 100%;
+                padding: 10px;
+                margin-bottom: 12px;
+                border: 1px solid #d9d9d9;
+                border-radius: 4px;
+                box-sizing: border-box;
+            }
+
+            button {
+                width: 100%;
+                padding: 10px;
+                background-color: rgb(64, 53, 113);
+                color: #060b0f; // Màu chữ trên nền màu
+                border: none;
+                border-radius: 4px;
+                cursor: pointer;
+                transition: background-color 0.3s ease;
+
+                &:hover {
+                    background-color: #4094c2; // Màu nền button khi hover
+                }
+            }
+
+            p {
+                margin-top: 10px;
+                font-size: 14px;
+                color: #666;
+            }
+        }
+    }
+}
