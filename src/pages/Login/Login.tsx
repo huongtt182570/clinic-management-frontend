@@ -3,10 +3,7 @@ import React, { useState } from 'react';
 // import banner from "../../image/banner.png";
 import { Link, useNavigate } from 'react-router-dom';
 import { COMMON } from '../../constants/common';
-import {
-  getUserInfoAsync,
-  handleLoginAsync,
-} from '../../redux/slices/authSlice';
+import { handleLoginAsync } from '../../redux/slices/authSlice';
 import { useAppDispatch } from '../hook';
 import './Login.scss';
 
@@ -50,7 +47,6 @@ const LoginForm: React.FC = () => {
           res?.payload?.data?.refreshToken
         );
         navigate(`/${currentTab}/dashboard`);
-        dispatch(getUserInfoAsync());
         notification.success({
           message: 'Login Successful',
           description: `Welcome ${currentTab} ${formValue.ID}!`,
