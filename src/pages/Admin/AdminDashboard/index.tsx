@@ -1,14 +1,13 @@
 // App.tsx
-import React, { useState } from 'react';
 import { Layout } from 'antd';
-import Dashboard_Admin from '../Dashboard_Admin';
+import React, { useState } from 'react';
+import Headers from '../../../components/Headers';
 import AddDoctor from '../AddDoctor';
 import AddPatient from '../AddPatient';
-import AppointmentDetails from '../Medical'
-import './style.scss'; // Create your own CSS file
-import Headers from '../../../components/Headers';
-import Sidebar from '../SidebarAdmin';
+import Dashboard_Admin from '../Dashboard_Admin';
 import Medical from '../Medical';
+import Sidebar from '../SidebarAdmin';
+import './style.scss'; // Create your own CSS file
 
 const { Content } = Layout;
 
@@ -26,7 +25,14 @@ const AdminDashboard: React.FC = () => {
       <Layout>
         <Sidebar activeTab={activeTab} onTabChange={handleTabChange} />
         <Layout style={{ padding: '24px' }}>
-          <Content style={{ background: '#fff', padding: 24, margin: 0, minHeight: 280 }}>
+          <Content
+            style={{
+              background: '#fff',
+              padding: 24,
+              margin: 0,
+              minHeight: 280,
+            }}
+          >
             {activeTab === 'dashboard' && <Dashboard_Admin />}
             {activeTab === 'addDoctor' && <AddDoctor />}
             {activeTab === 'addPatient' && <AddPatient />}

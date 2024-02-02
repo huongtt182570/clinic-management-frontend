@@ -1,32 +1,42 @@
 // RegisterForm.tsx
+import { Input, Layout, Tabs, notification } from 'antd';
 import React, { useState } from 'react';
-import { Layout, Drawer, Tabs, Button, Input, Row, Col, Menu } from 'antd';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 // import adminbanner from "../../../image/AdminBanner.png";
-import './style.scss';
-import { Header } from 'antd/es/layout/layout';
 import { CarOutlined } from '@ant-design/icons';
+import { Header } from 'antd/es/layout/layout';
+import { handleRegisterAsync } from '../../../redux/slices/registrationSlice';
+import { useAppDispatch } from '../../hook';
+import './style.scss';
 
 const { TabPane } = Tabs;
 
 const PatientRegisterForm: React.FC = () => {
   const [currentTab, setCurrentTab] = useState('admin');
+  const dispatch = useAppDispatch();
+  const navigate = useNavigate();
 
   const onTabChange = (key: string) => {
     setCurrentTab(key);
   };
 
   const [formValue, setFormValue] = useState({
-    username: '',
-    email: '',
+    phone: '',
+    fullname: '',
     password: '',
     confirmPassword: '',
     // Add additional fields if needed
   });
 
-  const handleRegister = () => {
+  const handleRegister = async () => {
     // Handle registration logic
-    console.log('Registration details:', formValue);
+    const res = await dispatch(handleRegisterAsync(formValue));
+    if (res.payload.success) {
+      notification.success({ message: 'Register successfully' });
+      navigate('/');
+    } else {
+      notification.error({ message: 'Register failed' });
+    }
   };
 
   const [open, setOpen] = useState(false);
@@ -63,38 +73,25 @@ const PatientRegisterForm: React.FC = () => {
             <div className="register-header">
               <h1>Patient Register</h1>
             </div>
-            <div className="tabs-container">
-              {
-                renderRegisterForm()
-              }
-
-            </div>
+            <div className="tabs-container">{renderRegisterForm()}</div>
           </div>
         </div>
       </Layout>
-
     </div>
-
   );
 
   function renderRegisterForm() {
     return (
       <div>
         <form onSubmit={handleSubmit} method="post">
-          <h3>Username</h3>
+          <h3>Phone</h3>
           <Input
             type="text"
             name="username"
-            value={formValue.username}
-            onChange={(e) => setFormValue({ ...formValue, username: e.target.value })}
-            required
-          />
-          <h3>Email</h3>
-          <Input
-            type="email"
-            name="email"
-            value={formValue.email}
-            onChange={(e) => setFormValue({ ...formValue, email: e.target.value })}
+            value={formValue.phone}
+            onChange={(e) =>
+              setFormValue({ ...formValue, phone: e.target.value })
+            }
             required
           />
           <h3>Password</h3>
@@ -102,7 +99,9 @@ const PatientRegisterForm: React.FC = () => {
             type="password"
             name="password"
             value={formValue.password}
-            onChange={(e) => setFormValue({ ...formValue, password: e.target.value })}
+            onChange={(e) =>
+              setFormValue({ ...formValue, password: e.target.value })
+            }
             required
           />
           <h3>Confirm Password</h3>
@@ -110,13 +109,24 @@ const PatientRegisterForm: React.FC = () => {
             type="password"
             name="confirmPassword"
             value={formValue.confirmPassword}
-            onChange={(e) => setFormValue({ ...formValue, confirmPassword: e.target.value })}
+            onChange={(e) =>
+              setFormValue({ ...formValue, confirmPassword: e.target.value })
+            }
+            required
+          />
+          <h3>Fullname</h3>
+          <Input
+            type="text"
+            name="text"
+            value={formValue.fullname}
+            onChange={(e) =>
+              setFormValue({ ...formValue, fullname: e.target.value })
+            }
             required
           />
           <button type="submit">Register</button>
           <p style={{ marginTop: '10px' }}>
-            Already have an account?{' '}
-            <Link to="/">Login</Link>
+            Already have an account? <Link to="/">Login</Link>
           </p>
         </form>
       </div>
