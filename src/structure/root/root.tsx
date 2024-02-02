@@ -1,11 +1,12 @@
-import { createBrowserRouter, RouteObject } from 'react-router-dom';
 import React, { ReactNode } from 'react';
+import { createBrowserRouter, RouteObject } from 'react-router-dom';
 import { Home } from '../../pages';
-import PatientRegistration from '../../pages/Patient/PatientRegistration/PatientRegistration';
-import DoctorDashboard from '../../pages/Doctor/DoctorDashboard/DoctorDashboard';
-import AdminDashboard from '../../pages/Admin/AdminDashboard';
-import PatientDashboard from '../../pages/Patient/PatientDashboard';
 import AddDoctor from '../../pages/Admin/AddDoctor';
+import AdminDashboard from '../../pages/Admin/AdminDashboard';
+import DoctorDashboard from '../../pages/Doctor/DoctorDashboard/DoctorDashboard';
+import PatientDashboard from '../../pages/Patient/PatientDashboard';
+import PatientRegistration from '../../pages/Patient/PatientRegistration/PatientRegistration';
+import ProtectedRoute from './ProtectedRoute';
 
 type AppRoute<P = {}> = RouteObject & {
   element: ReactNode;
@@ -15,16 +16,23 @@ type AppRoute<P = {}> = RouteObject & {
 
 const router = createBrowserRouter([
   {
-
     errorElement: <div>Error</div>,
     children: [
       {
         path: '/',
-        element: <Home />,
+        element: (
+          <ProtectedRoute>
+            <Home />
+          </ProtectedRoute>
+        ),
       },
       {
         path: 'patient/dashboard', // Thêm route cho trang dashboard của admin
-        element: <PatientDashboard />,
+        element: (
+          <ProtectedRoute>
+            <PatientDashboard />
+          </ProtectedRoute>
+        ),
       },
       {
         path: 'patient/register', // Thêm route cho trang đăng ký của bệnh nhân
@@ -32,20 +40,30 @@ const router = createBrowserRouter([
       },
       {
         path: 'doctor/dashboard', // Thêm route cho trang dashboard của bác sĩ
-        element: <DoctorDashboard />,
+        element: (
+          <ProtectedRoute>
+            <DoctorDashboard />
+          </ProtectedRoute>
+        ),
       },
       {
         path: 'admin/dashboard', // Thêm route cho trang dashboard của admin
-        element: <AdminDashboard />,
+        element: (
+          <ProtectedRoute>
+            <AdminDashboard />
+          </ProtectedRoute>
+        ),
       },
-<<<<<<< HEAD
       {
         path: '/add-doctor', // Thêm route cho trang dashboard của admin
-        element: <AddDoctor />,
+        element: (
+          <ProtectedRoute>
+            <AddDoctor />
+          </ProtectedRoute>
+        ),
       },
-=======
->>>>>>> 570a2368404a6a1eaca3194fb6ae2022c7de8e68
     ] as AppRoute[], //Ép kiểu routes thành AppRoute với thuộc tính userType
-  }]);
+  },
+]);
 
 export default router;

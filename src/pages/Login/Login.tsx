@@ -1,8 +1,14 @@
+import { Drawer, Layout, Tabs, notification } from 'antd';
 import React, { useState } from 'react';
-import { Radio, Layout, Drawer, Tabs, notification } from 'antd';
 // import banner from "../../image/banner.png";
-import "./Login.scss";
 import { Link, useNavigate } from 'react-router-dom';
+import { COMMON } from '../../constants/common';
+import {
+  getUserInfoAsync,
+  handleLoginAsync,
+} from '../../redux/slices/authSlice';
+import { useAppDispatch } from '../hook';
+import './Login.scss';
 
 const { TabPane } = Tabs;
 
@@ -14,43 +20,54 @@ const LoginForm: React.FC = () => {
   };
 
   const [formValue, setFormValue] = useState({
-    ID: "",
-    password: "",
+    ID: '',
+    password: '',
   });
 
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+  const dispatch = useAppDispatch();
 
-  const handleLogin = () => {
+  const handleLogin = async () => {
     setLoading(true);
     // Simulate asynchronous login logic
-    setTimeout(() => {
-      setLoading(false);
-      notification.success({
-        message: 'Login Successful',
-        description: `Welcome ${currentTab} ${formValue.ID}!`,
-      });
-
-      // Redirect based on user type
-      switch (currentTab) {
-        case 'patient':
-          navigate('/patient/dashboard');
-          break;
-        case 'doctor':
-          navigate('/doctor/dashboard');
-          break;
-        case 'admin':
-          navigate('/admin/dashboard');
-          break;
-        default:
-          break;
+    const res = await dispatch(
+      handleLoginAsync({
+        phone: formValue.ID,
+        password: formValue.password,
+      })
+    );
+    setLoading(false);
+    if (res?.payload?.success) {
+      const role = res.payload.data.user.role;
+      if (role && role?.toLocaleLowerCase() === currentTab) {
+        localStorage.setItem(
+          COMMON.ACCESS_TOKEN,
+          res?.payload?.data?.accessToken
+        );
+        localStorage.setItem(
+          COMMON.REFRESH_TOKEN,
+          res?.payload?.data?.refreshToken
+        );
+        navigate(`/${currentTab}/dashboard`);
+        dispatch(getUserInfoAsync());
+        notification.success({
+          message: 'Login Successful',
+          description: `Welcome ${currentTab} ${formValue.ID}!`,
+        });
+      } else {
+        notification.error({
+          message: 'Login failed',
+        });
       }
-    }, 2000);
-  }
+    } else {
+      notification.error({
+        message: 'Login failed',
+      });
+    }
+  };
 
-  const formPatientRegister = () => {
-
-  }
+  const formPatientRegister = () => {};
   const showDrawer = () => {
     setOpen(true);
   };
@@ -62,8 +79,8 @@ const LoginForm: React.FC = () => {
   const [open, setOpen] = useState(false);
 
   const [forgetPassword, setForgetPassword] = useState({
-    type: "",
-    email: "",
+    type: '',
+    email: '',
   });
 
   const handleForgetPassword = (e: any) => {
@@ -75,8 +92,8 @@ const LoginForm: React.FC = () => {
   };
 
   const [registrationForm, setRegistrationForm] = useState({
-    username: "",
-    email: "",
+    username: '',
+    email: '',
     // Add additional fields if needed
   });
 
@@ -106,10 +123,8 @@ const LoginForm: React.FC = () => {
                 </TabPane>
               </Tabs>
             </div>
-
           </div>
         </div>
-
       </div>
     </Layout>
   );
@@ -119,7 +134,11 @@ const LoginForm: React.FC = () => {
       <div>
         <form onSubmit={handleSubmit} method="post">
           <h3>
-            {currentTab === 'doctor' ? 'Doctor ID' : currentTab === 'admin' ? 'Admin ID' : 'Patient ID'}
+            {currentTab === 'doctor'
+              ? 'Doctor ID'
+              : currentTab === 'admin'
+              ? 'Admin ID'
+              : 'Patient ID'}
           </h3>
 
           <input
@@ -134,14 +153,16 @@ const LoginForm: React.FC = () => {
             type="password"
             name="password"
             value={formValue.password}
-            onChange={(e) => setFormValue({ ...formValue, password: e.target.value })}
+            onChange={(e) =>
+              setFormValue({ ...formValue, password: e.target.value })
+            }
             required
           />
-          <button type="submit">{loading ? "Loading..." : "Submit"}</button>
-          <p style={{ marginTop: "10px" }}>
-            Forget Password?{" "}
+          <button type="submit">{loading ? 'Loading...' : 'Submit'}</button>
+          <p style={{ marginTop: '10px' }}>
+            Forget Password?{' '}
             <span
-              style={{ color: "blue", cursor: "pointer" }}
+              style={{ color: 'blue', cursor: 'pointer' }}
               onClick={showDrawer}
             >
               Get it on Email!
@@ -164,8 +185,8 @@ const LoginForm: React.FC = () => {
     if (currentTab === 'patient') {
       return (
         <div>
-          <p style={{ marginTop: "10px" }}>
-            Don't have an account yet?{" "}
+          <p style={{ marginTop: '10px' }}>
+            Don't have an account yet?{' '}
             <Link to="/patient/register">Register</Link>
           </p>
         </div>
