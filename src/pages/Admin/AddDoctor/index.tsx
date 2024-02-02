@@ -25,7 +25,7 @@ const AddDoctor: React.FC = () => {
     return () => {
       dispatch(resetListDoctorAdmin());
     };
-  }, [dispatch]);
+  }, []);
   const [doctors, setDoctors] = useState<Doctor[]>([]);
   const { listDoctor = [] } = useAppSelector((state) => state.admin);
   const [isModalVisible, setIsModalVisible] = useState(false);

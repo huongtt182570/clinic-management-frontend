@@ -9,13 +9,14 @@ interface IProtectedRoute {
 function ProtectedRoute({ children }: IProtectedRoute) {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
+  //   const role = useAppSelector((state) => state.auth.user?.role);
+  const accessToken = localStorage.getItem('accessToken');
   useEffect(() => {
-    dispatch(getUserInfoAsync());
-  }, [dispatch]);
+    if (accessToken) dispatch(getUserInfoAsync());
+  }, [dispatch, accessToken]);
   useEffect(() => {
-    const accessToken = localStorage.getItem('accessToken');
     if (!accessToken) navigate('/');
-  });
+  }, []);
   return children;
 }
 

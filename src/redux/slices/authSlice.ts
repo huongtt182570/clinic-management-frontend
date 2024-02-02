@@ -25,9 +25,13 @@ export const loginSlice = createSlice({
   initialState,
   reducers: {},
   extraReducers: (builder) => {
-    builder.addCase(getUserInfoAsync.fulfilled, (state, action) => {
-      state.user = action.payload.data;
-    });
+    builder
+      .addCase(getUserInfoAsync.fulfilled, (state, action) => {
+        state.user = action.payload.data;
+      })
+      .addCase(handleLoginAsync.fulfilled, (state, action) => {
+        state.user = action.payload.data.user;
+      });
   },
 });
 
