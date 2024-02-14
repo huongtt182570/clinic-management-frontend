@@ -1,9 +1,9 @@
-import { IGetList, ILogin } from '../../pages/model/model';
+import { IAddDoctor, IGetList, ILogin } from '../../pages/model/model';
 import fetchHandler, { API_URL } from './axios';
 
-// export const updateDoctor = (body?: any) => {
-//   return fetchHandler.post(`${API_URL}/admin/doctor`, body);
-// };
+export const addDoctor = (body?: IAddDoctor) => {
+  return fetchHandler.post(`${API_URL}/admin/doctor`, body);
+};
 export const login = (body: ILogin) => {
   return fetchHandler.post(`${API_URL}/auth/signin`, body);
 };
@@ -32,4 +32,5 @@ export default {
   register,
   getUserInfo,
   getListDoctor,
+  addDoctor,
 };

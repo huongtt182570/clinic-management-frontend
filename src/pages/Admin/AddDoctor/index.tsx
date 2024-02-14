@@ -1,6 +1,8 @@
-import { Button, Form, Input, Modal, Table } from 'antd';
+import { Button, Form, Input, Modal, Table, notification } from 'antd';
 import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import {
+  addDoctorAsync,
   getListDoctorAdmin,
   resetListDoctorAdmin,
 } from '../../../redux/slices/adminSlice';
@@ -14,6 +16,7 @@ interface Doctor {
 }
 
 const AddDoctor: React.FC = () => {
+  const navigate = useNavigate();
   const dispatch = useAppDispatch();
   useEffect(() => {
     dispatch(
@@ -30,7 +33,7 @@ const AddDoctor: React.FC = () => {
   const { listDoctor = [] } = useAppSelector((state) => state.admin);
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [form] = Form.useForm();
-
+  // const [newDoctor, setNewDoctor] = useState<IAddDoctor>();
   const columns = [
     { title: 'ID', dataIndex: 'id', key: 'id' },
     { title: 'Name', dataIndex: 'name', key: 'name' },
@@ -53,14 +56,16 @@ const AddDoctor: React.FC = () => {
   };
 
   const handleOk = () => {
-    form.validateFields().then((values) => {
-      const newDoctor: Doctor = {
-        id: doctors.length + 1,
-        ...values,
-      };
-      setDoctors([...doctors, newDoctor]);
-      form.resetFields();
-      setIsModalVisible(false);
+    form.validateFields().then(async (values) => {
+      const res = await dispatch(addDoctorAsync(values));
+      if (res?.payload?.success) {
+        notification.success({ message: 'Thêm bác sĩ thành công.' });
+        dispatch(getListDoctorAdmin({ page: 1, pageSize: 10 }));
+        setIsModalVisible(false);
+        navigate('/');
+      } else {
+        notification.error({ message: 'Lỗi xảy ra khi thêm bác sĩ.' });
+      }
     });
   };
 
@@ -89,8 +94,8 @@ const AddDoctor: React.FC = () => {
       >
         <Form form={form} labelCol={{ span: 8 }} wrapperCol={{ span: 16 }}>
           <Form.Item
-            label="Name"
-            name="name"
+            label="Fullname"
+            name="fullname"
             rules={[
               { required: true, message: 'Please input the doctor name!' },
             ]}
@@ -98,9 +103,73 @@ const AddDoctor: React.FC = () => {
             <Input />
           </Form.Item>
           <Form.Item
-            label="Specialty"
-            name="specialty"
+            label="Phone"
+            name="phone"
+            rules={[
+              {
+                required: true,
+                message: 'Please input the doctor number phone!',
+              },
+            ]}
+          >
+            <Input />
+          </Form.Item>
+          <Form.Item
+            label="Email"
+            name="email"
+            rules={[
+              { required: true, message: 'Please input the doctor email!' },
+            ]}
+          >
+            <Input />
+          </Form.Item>
+          <Form.Item
+            label="Address"
+            name="address"
+            rules={[
+              {
+                required: true,
+                message: 'Please input the doctor number address!',
+              },
+            ]}
+          >
+            <Input />
+          </Form.Item>
+          <Form.Item
+            label="Birthday"
+            name="birthday"
+            rules={[
+              {
+                required: true,
+                message: 'Please input the doctor date of birth!',
+              },
+            ]}
+          >
+            <Input />
+          </Form.Item>
+          <Form.Item
+            label="Gender"
+            name="gender"
+            rules={[
+              {
+                required: true,
+                message: 'Please input the doctor date of birth!',
+              },
+            ]}
+          >
+            <Input />
+          </Form.Item>
+          <Form.Item
+            label="Speciality"
+            name="speciality"
             rules={[{ required: true, message: 'Please input the specialty!' }]}
+          >
+            <Input />
+          </Form.Item>
+          <Form.Item
+            label="Degree"
+            name="degree"
+            rules={[{ required: true, message: 'Please input the degree!' }]}
           >
             <Input />
           </Form.Item>
