@@ -12,3 +12,13 @@ export interface IGetList {
   page: number;
   pageSize: number;
 }
+export interface IAddDoctor {
+  phone: string;
+  fullname: string;
+  email: string;
+  birthday: string;
+  address: string;
+  speciality: string;
+  degree: string;
+  experience: string;
+}

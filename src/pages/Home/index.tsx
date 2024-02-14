@@ -9,6 +9,7 @@ const { Title, Paragraph } = Typography;
 const { Header, Content } = Layout;
 
 import { Typography } from 'antd';
+import Login from '../Login/Login';
 
 const Home: React.FC = () => {
   const [selectedTab, setSelectedTab] = useState<string>('2');
@@ -60,7 +61,7 @@ const Home: React.FC = () => {
           </Layout>
         );
       case '3':
-        return;
+        return <Login />;
       default:
         return null;
     }

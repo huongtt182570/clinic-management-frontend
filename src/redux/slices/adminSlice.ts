@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { Admin } from '../../pages/model/adminModel';
-import { IGetList } from '../../pages/model/model';
+import { IAddDoctor, IGetList } from '../../pages/model/model';
 import api from '../services/api';
 
 const initialState: Admin = {
@@ -18,6 +18,14 @@ export const getListPatientAdmin = createAsyncThunk(
   'admin/getListPatient',
   async (body: IGetList) => {
     const response = await api.getListDoctor(body);
+    return response.data;
+  }
+);
+
+export const addDoctorAsync = createAsyncThunk(
+  'admin/addDoctor',
+  async (body: IAddDoctor) => {
+    const response = await api.addDoctor(body);
     return response.data;
   }
 );
