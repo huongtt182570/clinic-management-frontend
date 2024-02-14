@@ -6,7 +6,7 @@ import {
   getListDoctorAdmin,
   resetListDoctorAdmin,
 } from '../../../redux/slices/adminSlice';
-import { useAppDispatch, useAppSelector } from '../../hook';
+import { useAppDispatch } from '../../hook';
 
 interface Doctor {
   id: number;
@@ -30,7 +30,17 @@ const AddDoctor: React.FC = () => {
     };
   }, []);
   const [doctors, setDoctors] = useState<Doctor[]>([]);
-  const { listDoctor = [] } = useAppSelector((state) => state.admin);
+  // const { listDoctor = [] } = useAppSelector((state) => state.admin);
+  const listDoctor = [
+    { id: 1, name: 'Dr. John Doe', specialty: 'Cardiologist', experience: 10 },
+    {
+      id: 2,
+      name: 'Dr. Jane Smith',
+      specialty: 'Dermatologist',
+      experience: 8,
+    },
+    // Add more fake doctors as needed
+  ];
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [form] = Form.useForm();
   // const [newDoctor, setNewDoctor] = useState<IAddDoctor>();

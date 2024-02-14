@@ -1,21 +1,12 @@
 // AddPatient.tsx
-import { DeleteOutlined, PlusOutlined } from '@ant-design/icons';
-import {
-  Button,
-  DatePicker,
-  Form,
-  Input,
-  Modal,
-  Space,
-  Table,
-  TimePicker,
-} from 'antd';
+import { DeleteOutlined } from '@ant-design/icons';
+import { DatePicker, Form, Input, Modal, Space, Table, TimePicker } from 'antd';
 import React, { useEffect, useState } from 'react';
 import {
   getListPatientAdmin,
   resetListPatientAdmin,
 } from '../../../redux/slices/adminSlice';
-import { useAppDispatch, useAppSelector } from '../../hook';
+import { useAppDispatch } from '../../hook';
 
 interface Patient {
   key: number;
@@ -53,7 +44,7 @@ const AddPatient: React.FC = () => {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [form] = Form.useForm();
   const dispatch = useAppDispatch();
-  const { listPatient = [] } = useAppSelector((state) => state.admin);
+  // const { listPatient = [] } = useAppSelector((state) => state.admin);
 
   useEffect(() => {
     dispatch(getListPatientAdmin({ page: 1, pageSize: 10 }));
@@ -121,16 +112,36 @@ const AddPatient: React.FC = () => {
     setPatients(patients.filter((patient) => patient.key !== key));
   };
 
+  const listPatient = [
+    {
+      key: 1,
+      name: 'John Doe',
+      age: 30,
+      phone: '1234567890',
+      medicalHistory: 'Cough and fever',
+      appointmentDate: '2022-01-20',
+      appointmentTime: '10:00',
+    },
+    {
+      key: 2,
+      name: 'Jane Doe',
+      age: 25,
+      phone: '9876543210',
+      medicalHistory: 'Headache',
+      appointmentDate: '2022-01-21',
+      appointmentTime: '14:30',
+    },
+  ];
   return (
     <div>
-      <Button
+      {/* <Button
         type="primary"
         icon={<PlusOutlined />}
         onClick={showModal}
         style={{ marginBottom: 16 }}
       >
         Add Patient
-      </Button>
+      </Button> */}
       <Table dataSource={listPatient} columns={columns} pagination={false} />
 
       <Modal

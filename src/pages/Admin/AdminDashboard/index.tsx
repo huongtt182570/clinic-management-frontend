@@ -4,7 +4,6 @@ import React, { useState } from 'react';
 import Headers from '../../../components/Headers';
 import AddDoctor from '../AddDoctor';
 import AddPatient from '../AddPatient';
-import Dashboard_Admin from '../Dashboard_Admin';
 import Medical from '../Medical';
 import Sidebar from '../SidebarAdmin';
 import './style.scss'; // Create your own CSS file
@@ -13,7 +12,7 @@ const { Content } = Layout;
 
 const AdminDashboard: React.FC = () => {
   // Mặc định là 'dashboard'
-  const [activeTab, setActiveTab] = useState<string>('dashboard');
+  const [activeTab, setActiveTab] = useState<string>('addDoctor');
 
   const handleTabChange = (tab: string) => {
     setActiveTab(tab);
@@ -33,7 +32,7 @@ const AdminDashboard: React.FC = () => {
               minHeight: 280,
             }}
           >
-            {activeTab === 'dashboard' && <Dashboard_Admin />}
+            {/* {activeTab === 'dashboard' && <Dashboard_Admin />} */}
             {activeTab === 'addDoctor' && <AddDoctor />}
             {activeTab === 'addPatient' && <AddPatient />}
             {activeTab === 'appointmentDetails' && <Medical />}
