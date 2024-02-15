@@ -4,6 +4,7 @@ import {
   ILogin,
   IService,
 } from '../../pages/model/model';
+import { IChangeInfo } from '../../pages/model/patientModel';
 import fetchHandler, { API_URL } from './axios';
 
 export const addDoctor = (body?: IAddDoctor) => {
@@ -18,6 +19,9 @@ export const register = (body: ILogin) => {
 
 export const getUserInfo = () => {
   return fetchHandler.get(`${API_URL}/auth/me`);
+};
+export const changeUserInfo = (body: IChangeInfo) => {
+  return fetchHandler.put(`${API_URL}/user`, body);
 };
 
 export const changePassword = (body: any) => {
@@ -70,4 +74,5 @@ export default {
   editService,
   deleteService,
   changePassword,
+  changeUserInfo,
 };
