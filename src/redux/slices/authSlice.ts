@@ -1,6 +1,7 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { authState } from '../../pages/model/authModel';
 import { ILogin } from '../../pages/model/model';
+import { IChangeInfo } from '../../pages/model/patientModel';
 import api from '../services/api';
 
 export const handleLoginAsync = createAsyncThunk(
@@ -11,12 +12,28 @@ export const handleLoginAsync = createAsyncThunk(
   }
 );
 const initialState: authState = {
-  user: '',
+  user: {
+    id: 0,
+    phone: '',
+    fullname: '',
+    email: '',
+    address: '',
+    birthday: '',
+    // gender:"OTHER"
+    role: '',
+  },
 };
 export const getUserInfoAsync = createAsyncThunk(
   'auth/getUserInfo',
   async () => {
     const response = await api.getUserInfo();
+    return response.data;
+  }
+);
+export const editUserInfoAsync = createAsyncThunk(
+  'auth/getUserInfo',
+  async (body: IChangeInfo) => {
+    const response = await api.changeUserInfo(body);
     return response.data;
   }
 );
