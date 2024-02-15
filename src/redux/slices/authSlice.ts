@@ -20,6 +20,13 @@ export const getUserInfoAsync = createAsyncThunk(
     return response.data;
   }
 );
+export const changePasswordAsync = createAsyncThunk(
+  'auth/getUserInfo',
+  async (body: any) => {
+    const response = await api.changePassword(body);
+    return response.data;
+  }
+);
 export const loginSlice = createSlice({
   name: 'LoginSlice',
   initialState,

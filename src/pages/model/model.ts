@@ -29,3 +29,9 @@ export interface IService {
   description: string;
   price: number;
 }
+
+export interface IChangePassword {
+  oldPassword: string;
+  newPassword: string;
+  confirmPassword: string;
+}

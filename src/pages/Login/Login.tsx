@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 // import banner from "../../image/banner.png";
 import { Link, useNavigate } from 'react-router-dom';
 import { COMMON } from '../../constants/common';
+import fetchHandler from '../../redux/services/axios';
 import { handleLoginAsync } from '../../redux/slices/authSlice';
 import { useAppDispatch } from '../hook';
 import './Login.scss';
@@ -46,6 +47,9 @@ const LoginForm: React.FC = () => {
           COMMON.REFRESH_TOKEN,
           res?.payload?.data?.refreshToken
         );
+        fetchHandler.defaults.headers.common[
+          'Authorization'
+        ] = `Bearer ${res?.payload?.data?.accessToken}`;
         navigate(`/${currentTab}/dashboard`);
         notification.success({
           message: 'Login Successful',
