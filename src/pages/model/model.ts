@@ -22,3 +22,10 @@ export interface IAddDoctor {
   degree: string;
   experience: string;
 }
+
+export interface IService {
+  id?: number;
+  name: string;
+  description: string;
+  price: number;
+}

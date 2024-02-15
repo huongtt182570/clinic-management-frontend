@@ -1,11 +1,12 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { Admin } from '../../pages/model/adminModel';
-import { IAddDoctor, IGetList } from '../../pages/model/model';
+import { IAddDoctor, IGetList, IService } from '../../pages/model/model';
 import api from '../services/api';
 
 const initialState: Admin = {
   listDoctor: [],
   listPatient: [],
+  listService: [],
 };
 export const getListDoctorAdmin = createAsyncThunk(
   'admin/getListDoctor',
@@ -17,7 +18,35 @@ export const getListDoctorAdmin = createAsyncThunk(
 export const getListPatientAdmin = createAsyncThunk(
   'admin/getListPatient',
   async (body: IGetList) => {
-    const response = await api.getListDoctor(body);
+    const response = await api.getListPatient(body);
+    return response.data;
+  }
+);
+export const getListServiceAsync = createAsyncThunk(
+  'admin/getListService',
+  async () => {
+    const response = await api.getListService();
+    return response.data;
+  }
+);
+export const addServiceAsync = createAsyncThunk(
+  'admin/addService',
+  async (body: IService) => {
+    const response = await api.addService(body);
+    return response.data;
+  }
+);
+export const editServiceAsync = createAsyncThunk(
+  'admin/editService',
+  async (body: IService) => {
+    const response = await api.editService(body);
+    return response.data;
+  }
+);
+export const deleteServiceAsync = createAsyncThunk(
+  'admin/deleteService',
+  async (id: number) => {
+    const response = await api.deleteService(id);
     return response.data;
   }
 );
@@ -49,6 +78,9 @@ export const adminSlice = createSlice({
       })
       .addCase(getListPatientAdmin.fulfilled, (state, action) => {
         state.listPatient = action?.payload?.data;
+      })
+      .addCase(getListServiceAsync.fulfilled, (state, action) => {
+        state.listService = action?.payload?.data;
       });
   },
 });

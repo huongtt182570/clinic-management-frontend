@@ -6,7 +6,7 @@ import {
   getListPatientAdmin,
   resetListPatientAdmin,
 } from '../../../redux/slices/adminSlice';
-import { useAppDispatch } from '../../hook';
+import { useAppDispatch, useAppSelector } from '../../hook';
 
 interface Patient {
   key: number;
@@ -44,7 +44,7 @@ const AddPatient: React.FC = () => {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [form] = Form.useForm();
   const dispatch = useAppDispatch();
-  // const { listPatient = [] } = useAppSelector((state) => state.admin);
+  const { listPatient = [] } = useAppSelector((state) => state.admin);
 
   useEffect(() => {
     dispatch(getListPatientAdmin({ page: 1, pageSize: 10 }));
@@ -53,7 +53,7 @@ const AddPatient: React.FC = () => {
     };
   }, []);
   const columns = [
-    { title: 'Name', dataIndex: 'name', key: 'name' },
+    { title: 'Name', dataIndex: 'fullname', key: 'fullname' },
     { title: 'Age', dataIndex: 'age', key: 'age' },
     { title: 'Phone', dataIndex: 'phone', key: 'phone' },
     {
@@ -112,26 +112,6 @@ const AddPatient: React.FC = () => {
     setPatients(patients.filter((patient) => patient.key !== key));
   };
 
-  const listPatient = [
-    {
-      key: 1,
-      name: 'John Doe',
-      age: 30,
-      phone: '1234567890',
-      medicalHistory: 'Cough and fever',
-      appointmentDate: '2022-01-20',
-      appointmentTime: '10:00',
-    },
-    {
-      key: 2,
-      name: 'Jane Doe',
-      age: 25,
-      phone: '9876543210',
-      medicalHistory: 'Headache',
-      appointmentDate: '2022-01-21',
-      appointmentTime: '14:30',
-    },
-  ];
   return (
     <div>
       {/* <Button
