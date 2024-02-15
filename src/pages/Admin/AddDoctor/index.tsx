@@ -1,4 +1,12 @@
-import { Button, Form, Input, Modal, Table, notification } from 'antd';
+import {
+  Button,
+  DatePicker,
+  Form,
+  Input,
+  Modal,
+  Table,
+  notification,
+} from 'antd';
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
@@ -6,7 +14,7 @@ import {
   getListDoctorAdmin,
   resetListDoctorAdmin,
 } from '../../../redux/slices/adminSlice';
-import { useAppDispatch } from '../../hook';
+import { useAppDispatch, useAppSelector } from '../../hook';
 
 interface Doctor {
   id: number;
@@ -30,35 +38,36 @@ const AddDoctor: React.FC = () => {
     };
   }, []);
   const [doctors, setDoctors] = useState<Doctor[]>([]);
-  // const { listDoctor = [] } = useAppSelector((state) => state.admin);
-  const listDoctor = [
-    { id: 1, name: 'Dr. John Doe', specialty: 'Cardiologist', experience: 10 },
-    {
-      id: 2,
-      name: 'Dr. Jane Smith',
-      specialty: 'Dermatologist',
-      experience: 8,
-    },
-    // Add more fake doctors as needed
-  ];
+  const { listDoctor = [] } = useAppSelector((state) => state.admin);
+  // const listDoctor = [
+  //   { id: 1, name: 'Dr. John Doe', specialty: 'Cardiologist', experience: 10 },
+  //   {
+  //     id: 2,
+  //     name: 'Dr. Jane Smith',
+  //     specialty: 'Dermatologist',
+  //     experience: 8,
+  //   },
+  //   // Add more fake doctors as needed
+  // ];
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [form] = Form.useForm();
   // const [newDoctor, setNewDoctor] = useState<IAddDoctor>();
   const columns = [
     { title: 'ID', dataIndex: 'id', key: 'id' },
-    { title: 'Name', dataIndex: 'name', key: 'name' },
-    { title: 'Specialty', dataIndex: 'specialty', key: 'specialty' },
+    { title: 'Fullmame', dataIndex: 'fullname', key: 'fullname' },
+    { title: 'Speciality', dataIndex: 'speciality', key: 'speciality' },
     { title: 'Experience (years)', dataIndex: 'experience', key: 'experience' },
-    {
-      title: 'Action',
-      dataIndex: 'action',
-      key: 'action',
-      render: (_: any, record: Doctor) => (
-        <Button type="link" onClick={() => handleEdit(record)}>
-          Edit
-        </Button>
-      ),
-    },
+    { title: 'Phone', dataIndex: 'phone', key: 'phone' },
+    // {
+    //   title: 'Action',
+    //   dataIndex: 'action',
+    //   key: 'action',
+    //   render: (_: any, record: Doctor) => (
+    //     <Button type="link" onClick={() => handleEdit(record)}>
+    //       Edit
+    //     </Button>
+    //   ),
+    // },
   ];
 
   const showModal = () => {
@@ -72,7 +81,7 @@ const AddDoctor: React.FC = () => {
         notification.success({ message: 'Thêm bác sĩ thành công.' });
         dispatch(getListDoctorAdmin({ page: 1, pageSize: 10 }));
         setIsModalVisible(false);
-        navigate('/');
+        // navigate('/');
       } else {
         notification.error({ message: 'Lỗi xảy ra khi thêm bác sĩ.' });
       }
@@ -89,6 +98,11 @@ const AddDoctor: React.FC = () => {
     console.log('Editing doctor:', record);
   };
 
+  const items = [
+    { lable: 'male', key: 'MALE' },
+    { label: 'Female', key: 'FEMALE' },
+    { label: 'Other', key: 'OTHER' },
+  ];
   return (
     <div>
       <Button type="primary" onClick={showModal} style={{ marginBottom: 16 }}>
@@ -155,20 +169,20 @@ const AddDoctor: React.FC = () => {
               },
             ]}
           >
-            <Input />
+            <DatePicker />
           </Form.Item>
-          <Form.Item
+          {/* <Form.Item
             label="Gender"
             name="gender"
             rules={[
               {
                 required: true,
-                message: 'Please input the doctor date of birth!',
+                message: 'Please input the doctor gender!',
               },
             ]}
           >
-            <Input />
-          </Form.Item>
+            <Dropdown menu={{ items }} />
+          </Form.Item> */}
           <Form.Item
             label="Speciality"
             name="speciality"

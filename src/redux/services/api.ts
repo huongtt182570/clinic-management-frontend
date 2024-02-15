@@ -1,4 +1,9 @@
-import { IAddDoctor, IGetList, ILogin } from '../../pages/model/model';
+import {
+  IAddDoctor,
+  IGetList,
+  ILogin,
+  IService,
+} from '../../pages/model/model';
 import fetchHandler, { API_URL } from './axios';
 
 export const addDoctor = (body?: IAddDoctor) => {
@@ -26,6 +31,27 @@ export const getListPatient = (body: IGetList) => {
   );
 };
 
+export const getListService = () => {
+  return fetchHandler.get(`${API_URL}/medical-service`);
+};
+
+export const addService = (body: IService) => {
+  return fetchHandler.post(`${API_URL}/medical-service`, body);
+};
+
+export const editService = (body: IService) => {
+  return fetchHandler.put(`${API_URL}/medical-service/${body.id}`, body);
+};
+
+export const deleteService = (id: number) => {
+  return fetchHandler.delete(`${API_URL}/medical-service/${id}`);
+};
+
+//api doctor
+export const getListPendingAppointment = () => {
+  return fetchHandler.get(`${API_URL}/doctor/appointments`);
+};
+
 export default {
   //   updateDoctor,
   login,
@@ -33,4 +59,10 @@ export default {
   getUserInfo,
   getListDoctor,
   addDoctor,
+  getListPatient,
+  getListPendingAppointment,
+  getListService,
+  addService,
+  editService,
+  deleteService,
 };

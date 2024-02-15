@@ -1,11 +1,13 @@
 import { Action, ThunkAction, configureStore } from '@reduxjs/toolkit';
 import adminReducer from './slices/adminSlice';
 import authReducer from './slices/authSlice';
+import doctorReducer from './slices/doctorSlice';
 
 export const store = configureStore({
   reducer: {
     auth: authReducer,
     admin: adminReducer,
+    doctor: doctorReducer,
   },
 });
 export type AppDispatch = typeof store.dispatch;
