@@ -19,6 +19,10 @@ export const register = (body: ILogin) => {
 export const getUserInfo = () => {
   return fetchHandler.get(`${API_URL}/auth/me`);
 };
+
+export const changePassword = (body: any) => {
+  return fetchHandler.put(`${API_URL}/user/change-password`, body);
+};
 //api admin
 export const getListDoctor = (body: IGetList) => {
   return fetchHandler.get(
@@ -65,4 +69,5 @@ export default {
   addService,
   editService,
   deleteService,
+  changePassword,
 };

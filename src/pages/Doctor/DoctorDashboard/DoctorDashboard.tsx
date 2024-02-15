@@ -1,13 +1,13 @@
 // Home.tsx
+import { Layout } from 'antd';
 import React, { useState } from 'react';
-import { Layout, Button } from 'antd';
-import { Link } from 'react-router-dom'; // Import thư viện Link từ react-router-dom
-import "./style.scss";
-import SidebarDoctor from '../SidebarDoctor';
 import Headers from '../../../components/Headers';
-import DoctorInfo from '../DoctorInfo';
+import ChangePassword from '../../changePassword/changePassword';
 import AcceptMedical from '../AcceptMedical';
 import DoctorAppointment from '../DoctorAppointment';
+import DoctorInfo from '../DoctorInfo';
+import SidebarDoctor from '../SidebarDoctor';
+import './style.scss';
 
 const { Content } = Layout;
 
@@ -25,11 +25,18 @@ const DoctorDashboard: React.FC = () => {
       <Layout>
         <SidebarDoctor activeTab={activeTab} onTabChange={handleTabChange} />
         <Layout style={{ padding: '24px' }}>
-          <Content style={{ background: '#fff', padding: 24, margin: 0, minHeight: 280 }}>
+          <Content
+            style={{
+              background: '#fff',
+              padding: 24,
+              margin: 0,
+              minHeight: 280,
+            }}
+          >
             {activeTab === 'information' && <DoctorInfo />}
             {activeTab === 'accept_medical' && <AcceptMedical />}
             {activeTab === 'doctor_appointment' && <DoctorAppointment />}
-
+            {activeTab === 'change_password' && <ChangePassword />}
           </Content>
         </Layout>
       </Layout>
