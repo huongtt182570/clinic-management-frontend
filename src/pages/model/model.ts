@@ -35,3 +35,8 @@ export interface IChangePassword {
   newPassword: string;
   confirmPassword: string;
 }
+export interface IBookAppointment {
+  startTime: string;
+  doctorId: number;
+  serviceId: number;
+}

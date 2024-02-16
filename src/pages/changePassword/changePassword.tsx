@@ -18,7 +18,6 @@ function ChangePassword() {
   };
 
   const handleChangePassword = async (values: any) => {
-    console.log(values);
     const formData = new FormData();
     formData.append('oldPassword', values.oldPassword?.toString());
     console.log(formData);
