@@ -1,4 +1,5 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import { formatDate } from '../../components/common/function';
 import { Admin } from '../../pages/model/adminModel';
 import {
   IAddDoctor,
@@ -99,6 +100,7 @@ export const adminSlice = createSlice({
           speciality: item.doctor.speciality,
           degree: item.doctor.degree,
           experience: item.doctor.experience,
+          birthday: formatDate(item.birthday),
         }));
         state.listDoctor = doctors;
       })
