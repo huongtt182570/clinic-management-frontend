@@ -131,6 +131,7 @@ const AddDoctor: React.FC = () => {
           notification.success({ message: 'Sửa bác sĩ thành công.' });
           dispatch(getListDoctorAdmin({ page: 1, pageSize: 10 }));
           setIsModalVisible(false);
+          setIsEdit(false);
         } else {
           notification.error({ message: 'Lỗi xảy ra khi sửa bác sĩ.' });
         }
@@ -150,6 +151,7 @@ const AddDoctor: React.FC = () => {
   const handleCancel = () => {
     form.resetFields();
     setIsModalVisible(false);
+    setIsEdit(false);
   };
 
   const handleEdit = (record: Doctor) => {

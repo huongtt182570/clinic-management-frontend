@@ -1,6 +1,6 @@
 import { Modal, Table } from 'antd';
 import React, { useEffect, useState } from 'react';
-import { getListDoctorAdmin } from '../../../redux/slices/adminSlice';
+import { getListDoctorAsync } from '../../../redux/slices/patientSlice';
 import { useAppDispatch, useAppSelector } from '../../hook';
 
 interface Doctor {
@@ -12,9 +12,9 @@ interface Doctor {
 
 const BookingDoctor: React.FC = () => {
   const dispatch = useAppDispatch();
-  const listDoctor = useAppSelector((state) => state.admin.listDoctor);
+  const listDoctor = useAppSelector((state) => state.patient.listDoctor);
   useEffect(() => {
-    dispatch(getListDoctorAdmin({ page: 1, pageSize: 10 }));
+    dispatch(getListDoctorAsync({ page: 1, pageSize: 10 }));
   }, []);
   const columns = [
     { title: 'Tên đầy đủ', dataIndex: 'fullname', key: 'fullname' },
@@ -24,12 +24,12 @@ const BookingDoctor: React.FC = () => {
     { title: 'Bằng cấp', dataIndex: 'degree', key: 'degree' },
     { title: 'Kinh nghiệm (năm)', dataIndex: 'experience', key: 'experience' },
     { title: 'Số điện thoại', dataIndex: 'phone', key: 'phone' },
-    {
-      title: 'Lịch trình',
-      dataIndex: 'appointmentDate',
-      key: 'appointmentDate',
-      render: () => <a onClick={() => showDetailModal()}>Chi tiết</a>,
-    },
+    // {
+    //   title: 'Lịch trình',
+    //   dataIndex: 'appointmentDate',
+    //   key: 'appointmentDate',
+    //   render: () => <a onClick={() => showDetailModal()}>Chi tiết</a>,
+    // },
   ];
 
   const [modalVisible, setModalVisible] = useState<boolean>(false);

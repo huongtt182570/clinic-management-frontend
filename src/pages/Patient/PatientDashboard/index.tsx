@@ -5,8 +5,8 @@ import Headers from '../../../components/Headers';
 import ChangePassword from '../../changePassword/changePassword';
 import AppointmentHistory from '../AppointmentHistory';
 import Booking from '../Booking';
-import BookingDoctor from '../BookingDoctor';
 import ChooseMedical from '../ChooseMedical';
+import BookingDoctor from '../Doctor';
 import PatientInfo from '../PatientInfo';
 import SidebarPatient from '../SidebarPatient';
 

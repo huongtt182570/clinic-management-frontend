@@ -79,6 +79,12 @@ export const getListAppointment = (body: IGetList) => {
   );
 };
 
+export const getListDoctorPatient = (body: IGetList) => {
+  return fetchHandler.get(
+    `${API_URL}/patient/doctors?page=${body.page}&pageSize=${body.pageSize}`
+  );
+};
+
 export const bookeAppointment = (body: IBookAppointment) => {
   return fetchHandler.post(`${API_URL}/patient/appointment`, body);
 };
@@ -101,4 +107,5 @@ export default {
   getListAppointment,
   bookeAppointment,
   deleteDoctor,
+  getListDoctorPatient,
 };

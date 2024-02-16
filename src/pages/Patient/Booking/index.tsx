@@ -11,10 +11,10 @@ import moment from 'moment';
 import React, { useEffect, useState } from 'react';
 import {
   bookeAppointmentAsync,
+  getListDoctorAsync,
   getListServiceAsync,
 } from '../../../redux/slices/patientSlice';
 import { useAppDispatch, useAppSelector } from '../../hook';
-import { doctors } from './doctors';
 
 const { Option } = Select;
 
@@ -27,13 +27,14 @@ const Booking: React.FC = () => {
     setSelectedDoctor(value);
   };
   const [showInfo, setShowInfo] = useState<boolean>(false);
-  const { listService } = useAppSelector((state) => state.patient);
+  const { listService, listDoctor } = useAppSelector((state) => state.patient);
   const handleServiceChange = (value: number) => {
     setSelectedService(value);
   };
 
   useEffect(() => {
     dispatch(getListServiceAsync());
+    dispatch(getListDoctorAsync({ page: 1, pageSize: 10 }));
   }, []);
   const handleDateChange = (date: any) => {
     setSelectedDate(date);
@@ -45,7 +46,7 @@ const Booking: React.FC = () => {
 
     // Hiển thị thông tin đã đăng ký
     const bookedInfo = {
-      doctor: doctors.find((doctor) => doctor.id === selectedDoctor),
+      doctor: listDoctor.find((doctor) => doctor.id === selectedDoctor),
       service: listService.find((service) => service?.id === selectedService),
       date: selectedDate ? selectedDate.format('YYYY-MM-DD') : '',
     };
@@ -76,9 +77,9 @@ const Booking: React.FC = () => {
           placeholder="Chọn bác sĩ"
           onChange={handleDoctorChange}
         >
-          {doctors.map((doctor) => (
+          {listDoctor.map((doctor) => (
             <Option key={doctor.id} value={doctor.id}>
-              {doctor.name}
+              {doctor.fullname}
             </Option>
           ))}
         </Select>
@@ -106,7 +107,7 @@ const Booking: React.FC = () => {
         <Card style={{ marginTop: 16 }}>
           <Descriptions title="Thông tin đặt lịch">
             <Descriptions.Item label="Bác sĩ">
-              {doctors.find((doctor) => doctor.id === selectedDoctor)?.name}
+              {listDoctor.find((doctor) => doctor.id === selectedDoctor)?.name}
             </Descriptions.Item>
             <Descriptions.Item label="Dịch vụ">
               {

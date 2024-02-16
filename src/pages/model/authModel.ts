@@ -8,5 +8,6 @@ export interface authState {
     birthday: string;
     // gender:"OTHER"
     role: string;
+    doctor: any;
   };
 }
