@@ -7,8 +7,8 @@ const Header: React.FC = () => {
     <div className="header">
       <p className='clinic'> Clinic Management</p>
       <div className="tabs">
-        <a href="/about" className="tab">About Us</a>
-        <a href="/login" className="tab">Login</a>
+        <a href="/about" className="tab">Về chúng tôi</a>
+        <a href="/login" className="tab">Đăng nhập</a>
       </div>
     </div>
   );

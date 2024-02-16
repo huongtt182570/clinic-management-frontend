@@ -1,5 +1,5 @@
 // Home.tsx
-import { CarOutlined, CheckOutlined } from '@ant-design/icons';
+import { CarOutlined, CheckOutlined, HeartOutlined } from '@ant-design/icons';
 import { Col, Layout, Menu, Row } from 'antd';
 import React, { useState } from 'react';
 import './style.scss';
@@ -33,28 +33,22 @@ const Home: React.FC = () => {
         return (
           <Layout>
             <Content>
-              <Title>Welcome to Clinic Managements!</Title>
+              <Title>Chào mừng đến với Quản lý Phòng Khám Của Chúng Tôi!</Title>
               <div style={sectionStyle}>
                 <Title level={2} style={{ color: '#ffff' }}>
-                  Affordable monthly premium packages
+                  Dịch vụ chăm sóc khách hàng tận tình
                 </Title>
                 <Paragraph>
-                  <CheckOutlined /> Lorem ipsum dolor sit amet, in verterem
-                  persecuti vix, sit te meis
+                  <CheckOutlined /> Chọn lựa các dịch vụ y tế ưa thích của bạn.
                 </Paragraph>
                 <Paragraph>
-                  <CheckOutlined /> Choose your favourite services
+                  <CheckOutlined /> Môi trường thân thiện và thoải mái cho mọi người sử dụng.
                 </Paragraph>
                 <Paragraph>
-                  <CheckOutlined /> Lorem ipsum dolor sit amet, in verterem
-                  persecuti vix, sit te meis
+                  <CheckOutlined /> Cam kết cung cấp dịch vụ y tế chất lượng cao.
                 </Paragraph>
                 <Paragraph>
-                  <CheckOutlined /> Only use friendly environment
-                </Paragraph>
-                <Paragraph>
-                  <CheckOutlined /> Lorem ipsum dolor sit amet, in verterem
-                  persecuti vix, sit te meis
+                  <CheckOutlined /> Thực hiện các biện pháp phòng ngừa và điều trị y tế hiệu quả.
                 </Paragraph>
               </div>
             </Content>
@@ -74,7 +68,7 @@ const Home: React.FC = () => {
           <Col span={8}>
             <div className="logo">
               <h2>
-                <CarOutlined /> Clinic Managements
+                <HeartOutlined /> Clinic Managements
               </h2>
             </div>
           </Col>
@@ -86,8 +80,8 @@ const Home: React.FC = () => {
               onClick={handleMenuClick}
               style={{ lineHeight: '64px', float: 'right' }}
             >
-              <Menu.Item key="2">ABOUT US</Menu.Item>
-              <Menu.Item key="3">Login</Menu.Item>
+              <Menu.Item key="2">Về chúng tôi</Menu.Item>
+              <Menu.Item key="3">Đăng nhập</Menu.Item>
             </Menu>
           </Col>
         </Row>

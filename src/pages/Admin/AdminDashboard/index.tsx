@@ -7,6 +7,7 @@ import AddPatient from '../AddPatient';
 import Medical from '../Medical';
 import Sidebar from '../SidebarAdmin';
 import './style.scss'; // Create your own CSS file
+import Dashboard_Admin from '../Dashboard_Admin';
 
 const { Content } = Layout;
 
@@ -32,7 +33,7 @@ const AdminDashboard: React.FC = () => {
               minHeight: 280,
             }}
           >
-            {/* {activeTab === 'dashboard' && <Dashboard_Admin />} */}
+            {activeTab === 'dashboard' && <Dashboard_Admin />}
             {activeTab === 'addDoctor' && <AddDoctor />}
             {activeTab === 'addPatient' && <AddPatient />}
             {activeTab === 'appointmentDetails' && <Medical />}

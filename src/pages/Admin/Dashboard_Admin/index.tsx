@@ -1,69 +1,62 @@
-import React from 'react';
-import { Table, Tag, Space } from 'antd';
-import dayjs from 'dayjs';
+import React, { useState } from 'react';
+import { Button, Select, Table } from 'antd';
 
-interface Appointment {
-    key: number;
-    patientName: string;
-    phoneNumber: string;
-    doctorName: string;
-    status: 'Chưa khám' | 'Đang khám' | 'Đã khám xong';
-
-}
-
-const data: Appointment[] = [
-    { key: 1, patientName: 'Bệnh nhân A', phoneNumber: '123456789', doctorName: 'Bác sĩ 1', status: 'Chưa khám' },
-    { key: 2, patientName: 'Bệnh nhân B', phoneNumber: '987654321', doctorName: 'Bác sĩ 2', status: 'Đang khám' },
-    { key: 3, patientName: 'Bệnh nhân C', phoneNumber: '555555555', doctorName: 'Bác sĩ 3', status: 'Đã khám xong' },
-    // ...Thêm dữ liệu khác nếu cần
-];
-
-const getStatusColor = (status: string) => {
-    switch (status) {
-        case 'Chưa khám':
-            return 'red';
-        case 'Đang khám':
-            return 'orange';
-        case 'Đã khám xong':
-            return 'green';
-        default:
-            return '';
-    }
-};
+const { Option } = Select;
 
 const Dashboard_Admin: React.FC = () => {
+    const [selectedService, setSelectedService] = useState<string | undefined>(undefined);
+    const [selectedDoctor, setSelectedDoctor] = useState<string | undefined>(undefined);
+    const [data, setData] = useState<{ service: string, doctor: string }[]>([]);
+
+    const handleSave = () => {
+        if (selectedService && selectedDoctor) {
+            setData([...data, { service: selectedService, doctor: selectedDoctor }]);
+            // Reset dropdown selections after saving
+            setSelectedService(undefined);
+            setSelectedDoctor(undefined);
+        }
+    };
+
     const columns = [
         {
-            title: 'Patient Name',
-            dataIndex: 'patientName',
-            key: 'patientName',
+            title: 'Dịch vụ',
+            dataIndex: 'service',
+            key: 'service',
         },
         {
-            title: 'Phone Number',
-            dataIndex: 'phoneNumber',
-            key: 'phoneNumber',
-        },
-        {
-            title: 'Doctor Name',
-            dataIndex: 'doctorName',
-            key: 'doctorName',
-        },
-        {
-            title: 'Status',
-            dataIndex: 'status',
-            key: 'status',
-            render: (text: string) => <Tag color={getStatusColor(text)}>{text}</Tag>,
+            title: 'Bác sĩ phụ trách',
+            dataIndex: 'doctor',
+            key: 'doctor',
         },
     ];
 
-    // Lọc các bệnh nhân khám trong ngày hôm nay
-    const todayAppointments = data.filter(appointment => dayjs().isSame(dayjs(appointment.date), 'day'));
-
     return (
-        <>
-            <h2>Danh sách bệnh nhân khám trong ngày hôm nay</h2>
-            <Table dataSource={todayAppointments} columns={columns} />
-        </>
+        <div>
+            <div style={{ marginBottom: 16 }}>
+                <Select
+                    placeholder="Chọn dịch vụ"
+                    style={{ width: 200, marginRight: 16 }}
+                    value={selectedService}
+                    onChange={(value) => setSelectedService(value)}
+                >
+                    <Option value="service1">Dịch vụ 1</Option>
+                    <Option value="service2">Dịch vụ 2</Option>
+                    {/* Add more options as needed */}
+                </Select>
+                <Select
+                    placeholder="Chọn bác sĩ"
+                    style={{ width: 200, marginRight: 16 }}
+                    value={selectedDoctor}
+                    onChange={(value) => setSelectedDoctor(value)}
+                >
+                    <Option value="doctor1">Bác sĩ 1</Option>
+                    <Option value="doctor2">Bác sĩ 2</Option>
+                    {/* Add more options as needed */}
+                </Select>
+                <Button type="primary" onClick={handleSave}>Lưu</Button>
+            </div>
+            <Table dataSource={data} columns={columns} pagination={false} />
+        </div>
     );
 };
 

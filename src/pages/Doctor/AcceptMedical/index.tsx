@@ -84,29 +84,6 @@ const AcceptMedical: React.FC<AcceptMedicalProps> = () => {
     </Form>
   );
 
-  const columns = [
-    {
-      title: 'Tên bệnh nhân',
-      dataIndex: 'patientName',
-      key: 'patientName',
-    },
-    {
-      title: 'Tuổi',
-      dataIndex: 'age',
-      key: 'age',
-    },
-    {
-      title: 'Lịch sử bệnh',
-      dataIndex: 'medicalHistory',
-      key: 'medicalHistory',
-    },
-    {
-      title: 'Thời gian khám',
-      dataIndex: 'timeSlot',
-      key: 'timeSlot',
-    },
-  ];
-
   const pendingColumns = [
     {
       title: 'Tên bệnh nhân',
@@ -150,20 +127,13 @@ const AcceptMedical: React.FC<AcceptMedicalProps> = () => {
       <Col span={12}>
         {/* Danh sách lịch đặt cần được chấp nhận */}
         <Card title="Yêu cầu" style={{ background: '#f9f9f9' }}>
-          <Table
-            dataSource={listPendingAppointments}
-            columns={pendingColumns}
-          />
-        </Card>
-      </Col>
-
-      <Col span={12}>
-        {/* Danh sách bệnh nhân đã chấp nhận */}
-        <Card
-          title="Danh sách bệnh nhân đã chấp nhận"
-          style={{ background: '#f9f9f9' }}
-        >
-          <Table dataSource={listApproveAppointments} columns={columns} />
+          <div style={{ overflowX: 'auto' }}>
+            <Table
+              dataSource={listPendingAppointments}
+              columns={pendingColumns}
+              style={{ width: '100%' }}
+            />
+          </div>
         </Card>
       </Col>
 

@@ -41,6 +41,19 @@ const AddPatient: React.FC = () => {
     // Add more patient data as needed
   ]);
 
+  const [detailVisible, setDetailVisible] = useState(false);
+  const [selectedPatient, setSelectedPatient] = useState<Patient | null>(null);
+
+  const showDetailModal = (patient: Patient) => {
+    setSelectedPatient(patient);
+    setDetailVisible(true);
+  };
+
+  const handleDetailCancel = () => {
+    setSelectedPatient(null);
+    setDetailVisible(false);
+  };
+
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [form] = Form.useForm();
   const dispatch = useAppDispatch();
@@ -53,33 +66,26 @@ const AddPatient: React.FC = () => {
     };
   }, []);
   const columns = [
-    { title: 'Name', dataIndex: 'fullname', key: 'fullname' },
-    { title: 'Age', dataIndex: 'age', key: 'age' },
-    { title: 'Phone', dataIndex: 'phone', key: 'phone' },
+    { title: 'Họ và tên', dataIndex: 'fullname', key: 'fullname' },
+    { title: 'Ngày sinh', dataIndex: 'birthday', key: 'birthday' },
+    { title: 'Giới tính', dataIndex: 'gender', key: 'gender' },
+    { title: 'Số điện thoại', dataIndex: 'phone', key: 'phone' },
+    { title: 'Email', dataIndex: 'email', key: 'email' },
     {
-      title: 'Medical History',
+      title: 'Lịch sử khám',
       dataIndex: 'medicalHistory',
       key: 'medicalHistory',
+      render: (_: any, record: Patient) => (
+        <a onClick={() => showDetailModal(record)}>Chi tiết</a>
+      ),
     },
+
     {
-      title: 'Appointment Date',
+      title: 'Trạng thái cuộc hẹn',
       dataIndex: 'appointmentDate',
       key: 'appointmentDate',
-    },
-    {
-      title: 'Appointment Time',
-      dataIndex: 'appointmentTime',
-      key: 'appointmentTime',
-    },
-    {
-      title: 'Action',
-      key: 'action',
       render: (_: any, record: Patient) => (
-        <Space size="middle">
-          <a onClick={() => handleDelete(record.key)}>
-            <DeleteOutlined />
-          </a>
-        </Space>
+        <a onClick={() => showDetailModal(record)}>Chi tiết</a>
       ),
     },
   ];
@@ -114,14 +120,7 @@ const AddPatient: React.FC = () => {
 
   return (
     <div>
-      {/* <Button
-        type="primary"
-        icon={<PlusOutlined />}
-        onClick={showModal}
-        style={{ marginBottom: 16 }}
-      >
-        Add Patient
-      </Button> */}
+
       <Table dataSource={listPatient} columns={columns} pagination={false} />
 
       <Modal

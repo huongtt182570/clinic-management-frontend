@@ -18,10 +18,10 @@ const Sidebar: React.FC<SidebarProps> = ({ activeTab, onTabChange }) => {
         selectedKeys={[activeTab]}
         onClick={({ key }) => onTabChange(key.toString())}
       >
-        {/* <Menu.Item key="dashboard">Bảng điều khiển</Menu.Item> */}
-        <Menu.Item key="addDoctor">Bác sĩ</Menu.Item>
+        <Menu.Item key="dashboard">Bảng điều khiển</Menu.Item>
+        <Menu.Item key="addDoctor">Quản lý bác sĩ</Menu.Item>
         <Menu.Item key="addPatient">Bệnh nhân</Menu.Item>
-        <Menu.Item key="appointmentDetails">Dịch vụ</Menu.Item>
+        <Menu.Item key="appointmentDetails">Quản lý dịch vụ</Menu.Item>
       </Menu>
     </Sider>
   );

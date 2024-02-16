@@ -71,7 +71,7 @@ const PatientRegisterForm: React.FC = () => {
         </div> */}
           <div className="register-container">
             <div className="register-header">
-              <h1>Patient Register</h1>
+              <h1>Đăng ký</h1>
             </div>
             <div className="tabs-container">{renderRegisterForm()}</div>
           </div>
@@ -84,7 +84,7 @@ const PatientRegisterForm: React.FC = () => {
     return (
       <div>
         <form onSubmit={handleSubmit} method="post">
-          <h3>Phone</h3>
+          <h3>Số điện thoại</h3>
           <Input
             type="text"
             name="username"
@@ -94,7 +94,7 @@ const PatientRegisterForm: React.FC = () => {
             }
             required
           />
-          <h3>Password</h3>
+          <h3>Mật khẩu</h3>
           <Input
             type="password"
             name="password"
@@ -104,7 +104,7 @@ const PatientRegisterForm: React.FC = () => {
             }
             required
           />
-          <h3>Confirm Password</h3>
+          <h3>Nhập lại mật khẩu</h3>
           <Input
             type="password"
             name="confirmPassword"
@@ -114,7 +114,7 @@ const PatientRegisterForm: React.FC = () => {
             }
             required
           />
-          <h3>Fullname</h3>
+          <h3>Tên đầy đủ</h3>
           <Input
             type="text"
             name="text"
@@ -124,9 +124,9 @@ const PatientRegisterForm: React.FC = () => {
             }
             required
           />
-          <button type="submit">Register</button>
+          <button type="submit">Đăng ký</button>
           <p style={{ marginTop: '10px' }}>
-            Already have an account? <Link to="/">Login</Link>
+            Bạn đã có tài khoản? <Link to="/">Đăng nhập</Link>
           </p>
         </form>
       </div>

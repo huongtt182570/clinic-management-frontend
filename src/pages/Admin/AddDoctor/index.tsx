@@ -1,11 +1,13 @@
 import {
   Button,
   DatePicker,
+  Dropdown,
   Form,
   Input,
   Modal,
   Table,
   notification,
+  Popconfirm
 } from 'antd';
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
@@ -15,6 +17,7 @@ import {
   resetListDoctorAdmin,
 } from '../../../redux/slices/adminSlice';
 import { useAppDispatch, useAppSelector } from '../../hook';
+import { EditOutlined, DeleteOutlined } from '@ant-design/icons';
 
 interface Doctor {
   id: number;
@@ -39,35 +42,72 @@ const AddDoctor: React.FC = () => {
   }, []);
   const [doctors, setDoctors] = useState<Doctor[]>([]);
   const { listDoctor = [] } = useAppSelector((state) => state.admin);
-  // const listDoctor = [
-  //   { id: 1, name: 'Dr. John Doe', specialty: 'Cardiologist', experience: 10 },
-  //   {
-  //     id: 2,
-  //     name: 'Dr. Jane Smith',
-  //     specialty: 'Dermatologist',
-  //     experience: 8,
-  //   },
-  //   // Add more fake doctors as needed
-  // ];
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [form] = Form.useForm();
   // const [newDoctor, setNewDoctor] = useState<IAddDoctor>();
+
+  const [detailVisible, setDetailVisible] = useState(false);
+  const [selectedPatient, setSelectedPatient] = useState<Doctor | null>(null);
+
+  const showDetailModal = (doctors: Doctor) => {
+    setSelectedPatient(doctors);
+    setDetailVisible(true);
+  };
+
+  const handleDelete = (doctorId: number) => {
+    // Thực hiện logic xóa bác sĩ với doctorId đã được truyền vào
+    console.log('Deleting doctor with ID:', doctorId);
+    // Đưa phần logic xóa bác sĩ vào đây
+  };
+
+  const dataSource = [
+    {
+      key: '1',
+      patientName: 'John Doe',
+      phoneNumber: '1234567890',
+      gender: 'Male',
+      email: 'johndoe@example.com',
+      medicalHistory: 'Cough and fever',
+      appointmentHistory: '2024-02-14',
+      appointmentStatus: 'Waiting',
+    },
+    // Thêm dữ liệu khác nếu cần
+  ];
+
+  const [modalVisible, setModalVisible] = useState<boolean>(false);
   const columns = [
-    { title: 'ID', dataIndex: 'id', key: 'id' },
-    { title: 'Fullmame', dataIndex: 'fullname', key: 'fullname' },
-    { title: 'Speciality', dataIndex: 'speciality', key: 'speciality' },
-    { title: 'Experience (years)', dataIndex: 'experience', key: 'experience' },
-    { title: 'Phone', dataIndex: 'phone', key: 'phone' },
-    // {
-    //   title: 'Action',
-    //   dataIndex: 'action',
-    //   key: 'action',
-    //   render: (_: any, record: Doctor) => (
-    //     <Button type="link" onClick={() => handleEdit(record)}>
-    //       Edit
-    //     </Button>
-    //   ),
-    // },
+    // { title: 'ID', dataIndex: 'id', key: 'id' },
+    { title: 'Tên đầy đủ', dataIndex: 'fullname', key: 'fullname' },
+    { title: 'Ngày sinh', dataIndex: 'birthday', key: 'birthday' },
+    { title: 'Giới tính', dataIndex: 'gender', key: 'gender' },
+    { title: 'Chuyên môn', dataIndex: 'speciality', key: 'speciality' },
+    { title: 'Bằng cấp', dataIndex: 'degree', key: 'degree' },
+    { title: 'Kinh nghiệm (năm)', dataIndex: 'experience', key: 'experience' },
+    { title: 'Số điện thoại', dataIndex: 'phone', key: 'phone' },
+    {
+      title: 'Lịch trình',
+      dataIndex: 'appointmentDate',
+      key: 'appointmentDate',
+      render: () => <a onClick={() => setModalVisible(true)}>Chi tiết</a>,
+    },
+    {
+      title: 'Hành động',
+      dataIndex: 'action',
+      key: 'action',
+      render: (_: any, record: Doctor) => (
+        <div>
+          <Button type="link" onClick={() => handleEdit(record)} icon={<EditOutlined />} />
+          <Popconfirm
+            title="Bạn có chắc chắn muốn xóa?"
+            onConfirm={() => handleDelete(record.id)}
+            okText="Có"
+            cancelText="Không"
+          >
+            <Button type="link" icon={<DeleteOutlined />} />
+          </Popconfirm>
+        </div>
+      ),
+    },
   ];
 
   const showModal = () => {
@@ -106,7 +146,7 @@ const AddDoctor: React.FC = () => {
   return (
     <div>
       <Button type="primary" onClick={showModal} style={{ marginBottom: 16 }}>
-        Add Doctor
+        Thêm bác sĩ
       </Button>
       <Table dataSource={listDoctor || []} columns={columns} />
 
@@ -118,61 +158,61 @@ const AddDoctor: React.FC = () => {
       >
         <Form form={form} labelCol={{ span: 8 }} wrapperCol={{ span: 16 }}>
           <Form.Item
-            label="Fullname"
+            label="Tên đầy đủ"
             name="fullname"
             rules={[
-              { required: true, message: 'Please input the doctor name!' },
+              { required: true, message: 'Bạn chưa điền tên đầy đủ!' },
             ]}
           >
             <Input />
           </Form.Item>
           <Form.Item
-            label="Phone"
+            label="Số điện thoại"
             name="phone"
             rules={[
               {
                 required: true,
-                message: 'Please input the doctor number phone!',
+                message: 'Bạn chưa điền số điện thoại!',
               },
             ]}
           >
-            <Input />
+            <Input type="number" />
           </Form.Item>
           <Form.Item
             label="Email"
             name="email"
             rules={[
-              { required: true, message: 'Please input the doctor email!' },
+              { required: true, message: 'Bạn chưa điền email!' },
             ]}
           >
             <Input />
           </Form.Item>
           <Form.Item
-            label="Address"
+            label="Địa chỉ"
             name="address"
             rules={[
               {
                 required: true,
-                message: 'Please input the doctor number address!',
+                message: 'Bạn chưa điền địa chỉ!',
               },
             ]}
           >
             <Input />
           </Form.Item>
           <Form.Item
-            label="Birthday"
+            label="Ngày sinh"
             name="birthday"
             rules={[
               {
                 required: true,
-                message: 'Please input the doctor date of birth!',
+                message: 'Bạn chưa điền ngày sinh!',
               },
             ]}
           >
             <DatePicker />
           </Form.Item>
           {/* <Form.Item
-            label="Gender"
+            label="gender"
             name="gender"
             rules={[
               {
@@ -184,32 +224,49 @@ const AddDoctor: React.FC = () => {
             <Dropdown menu={{ items }} />
           </Form.Item> */}
           <Form.Item
-            label="Speciality"
+            label="Chuyên môn"
             name="speciality"
-            rules={[{ required: true, message: 'Please input the specialty!' }]}
+            rules={[{ required: true, message: 'Bạn chưa điền chuyên môn!' }]}
           >
             <Input />
           </Form.Item>
           <Form.Item
-            label="Degree"
+            label="Bằng cấp"
             name="degree"
-            rules={[{ required: true, message: 'Please input the degree!' }]}
+            rules={[{ required: true, message: 'Bạn chưa điền bằng cấp!' }]}
           >
             <Input />
           </Form.Item>
           <Form.Item
-            label="Experience (years)"
+            label="Kinh nghiệm(năm)"
             name="experience"
             rules={[
               {
                 required: true,
-                message: 'Please input the doctor experience!',
+                message: 'Bạn chưa điền kinh nghiệm!',
               },
             ]}
           >
             <Input type="number" />
           </Form.Item>
         </Form>
+      </Modal>
+      <Modal
+        title="Chi tiết"
+        visible={modalVisible}
+        onCancel={() => setModalVisible(false)}
+        footer={null}
+      >
+        {/* Form và bảng thông tin */}
+        <Table
+          dataSource={[dataSource[0]]} // Dùng [dataSource[0]] để chỉ hiển thị thông tin cho bệnh nhân đầu tiên trong ví dụ
+          columns={[
+            { title: 'Dịch vụ khám', dataIndex: 'serviceName', key: 'serviceName' },
+            { title: 'Bác sĩ phụ trách', dataIndex: 'doctor', key: 'doctor' },
+            // { title: 'Chuẩn đoán bệnh', dataIndex: 'diagnosis', key: 'diagnosis' },
+            { title: 'Thời gian khám', dataIndex: 'appointmentTime', key: 'appointmentTime' },
+          ]}
+        />
       </Modal>
     </div>
   );

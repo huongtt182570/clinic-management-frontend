@@ -52,22 +52,22 @@ const LoginForm: React.FC = () => {
         ] = `Bearer ${res?.payload?.data?.accessToken}`;
         navigate(`/${currentTab}/dashboard`);
         notification.success({
-          message: 'Login Successful',
-          description: `Welcome ${currentTab} ${formValue.ID}!`,
+          message: 'Đăng nhập thành công',
+          description: `Chào mừng ${currentTab} ${formValue.ID}!`,
         });
       } else {
         notification.error({
-          message: 'Login failed',
+          message: 'Đăng nhập không thành công',
         });
       }
     } else {
       notification.error({
-        message: 'Login failed',
+        message: 'Đăng nhập không thành công',
       });
     }
   };
 
-  const formPatientRegister = () => {};
+  const formPatientRegister = () => { };
   const showDrawer = () => {
     setOpen(true);
   };
@@ -107,18 +107,18 @@ const LoginForm: React.FC = () => {
         <div className="login-container">
           <div className="rightside">
             <div className="login-header">
-              <h1>Login</h1>
+              <h1>Đăng nhập</h1>
             </div>
             <div className="tabs-container">
               <Tabs activeKey={currentTab} onChange={onTabChange}>
-                <TabPane tab="Patient" key="patient">
+                <TabPane tab="Bệnh nhân" key="patient">
                   {renderLoginForm()}
                   {renderPatientRegistrationForm()}
                 </TabPane>
-                <TabPane tab="Doctor" key="doctor">
+                <TabPane tab="Bác sĩ" key="doctor">
                   {renderLoginForm()}
                 </TabPane>
-                <TabPane tab="Admin" key="admin">
+                <TabPane tab="Quản trị viên" key="admin">
                   {renderLoginForm()}
                 </TabPane>
               </Tabs>
@@ -134,11 +134,11 @@ const LoginForm: React.FC = () => {
       <div>
         <form onSubmit={handleSubmit} method="post">
           <h3>
-            {currentTab === 'doctor'
-              ? 'Doctor ID'
-              : currentTab === 'admin'
-              ? 'Admin ID'
-              : 'Patient ID'}
+            {currentTab === 'Bác sĩ'
+              ? 'Số điện thoại bác sĩ'
+              : currentTab === 'Quản trị viên'
+                ? 'Mã quản trị viên'
+                : 'Số điện thoại bệnh nhân'}
           </h3>
 
           <input
@@ -148,7 +148,7 @@ const LoginForm: React.FC = () => {
             onChange={(e) => setFormValue({ ...formValue, ID: e.target.value })}
             required
           />
-          <h3>Password</h3>
+          <h3>Mật khẩu</h3>
           <input
             type="password"
             name="password"
@@ -158,25 +158,8 @@ const LoginForm: React.FC = () => {
             }
             required
           />
-          <button type="submit">{loading ? 'Loading...' : 'Submit'}</button>
-          <p style={{ marginTop: '10px' }}>
-            Forget Password?{' '}
-            <span
-              style={{ color: 'blue', cursor: 'pointer' }}
-              onClick={showDrawer}
-            >
-              Get it on Email!
-            </span>
-          </p>
+          <button type="submit">{loading ? 'Loading...' : 'Đăng nhập'}</button>
         </form>
-        <Drawer
-          title="Forget Password"
-          placement="left"
-          onClose={onClose}
-          visible={open}
-        >
-          {/* Forget password content */}
-        </Drawer>
       </div>
     );
   }
@@ -186,8 +169,8 @@ const LoginForm: React.FC = () => {
       return (
         <div>
           <p style={{ marginTop: '10px' }}>
-            Don't have an account yet?{' '}
-            <Link to="/patient/register">Register</Link>
+            Bạn chưa có tài khoản?{' '}
+            <Link to="/patient/register">Đăng ký</Link>
           </p>
         </div>
       );

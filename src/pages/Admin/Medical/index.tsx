@@ -27,7 +27,7 @@ const MedicalServiceTable: React.FC = () => {
     { title: 'Mô tả', dataIndex: 'description', key: 'description' },
     { title: 'Giá', dataIndex: 'price', key: 'servicePrice' },
     {
-      title: 'Action',
+      title: 'Hành động',
       key: 'action',
       render: (_: any, record: IService) => (
         <Space size="middle">
@@ -112,7 +112,7 @@ const MedicalServiceTable: React.FC = () => {
         onClick={showAddModal}
         style={{ marginBottom: 16 }}
       >
-        Add Service
+        Thêm dịch vụ
       </Button>
       <Table dataSource={listService} columns={columns} pagination={false} />
 
