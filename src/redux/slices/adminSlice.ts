@@ -97,6 +97,7 @@ export const adminSlice = createSlice({
       .addCase(getListDoctorAdmin.fulfilled, (state, action) => {
         const doctors = action?.payload?.data?.map((item) => ({
           ...item,
+          id: item?.doctor.id,
           speciality: item.doctor.speciality,
           degree: item.doctor.degree,
           experience: item.doctor.experience,

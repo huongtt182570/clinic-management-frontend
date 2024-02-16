@@ -84,7 +84,7 @@ const AddDoctor: React.FC = () => {
     // { title: 'ID', dataIndex: 'id', key: 'id' },
     { title: 'Tên đầy đủ', dataIndex: 'fullname', key: 'fullname' },
     { title: 'Ngày sinh', dataIndex: 'birthday', key: 'birthday' },
-    { title: 'Giới tính', dataIndex: 'gender', key: 'gender' },
+    // { title: 'Giới tính', dataIndex: 'gender', key: 'gender' },
     { title: 'Chuyên môn', dataIndex: 'speciality', key: 'speciality' },
     { title: 'Bằng cấp', dataIndex: 'degree', key: 'degree' },
     { title: 'Kinh nghiệm (năm)', dataIndex: 'experience', key: 'experience' },
@@ -180,9 +180,12 @@ const AddDoctor: React.FC = () => {
         onCancel={handleCancel}
       >
         <Form form={form} labelCol={{ span: 8 }} wrapperCol={{ span: 16 }}>
-          <Form.Item label="Id" name="id">
-            <Input disabled />
-          </Form.Item>
+          {isEdit && (
+            <Form.Item label="Id" name="id">
+              <Input disabled />
+            </Form.Item>
+          )}
+
           <Form.Item
             label="Tên đầy đủ"
             name="fullname"
