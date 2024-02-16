@@ -155,7 +155,7 @@ const AddDoctor: React.FC = () => {
   const handleEdit = (record: Doctor) => {
     setIsModalVisible(true);
     setIsEdit(true);
-    form.setFieldsValue(record);
+    form.setFieldsValue({ ...record, birthday: '' });
     console.log('Editing doctor:', record);
   };
 
