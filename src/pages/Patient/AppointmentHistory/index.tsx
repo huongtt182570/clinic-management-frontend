@@ -8,7 +8,7 @@ const AppointmentHistory: React.FC = () => {
   const dispatch = useAppDispatch();
   useEffect(() => {
     dispatch(getListAppointmentAsync({ page: 1, pageSize: 10 }));
-  });
+  }, []);
   const columns = [
     {
       title: 'Thời gian',
