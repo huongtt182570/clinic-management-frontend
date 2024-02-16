@@ -17,4 +17,5 @@ export interface IAppointment {
 export interface Patient {
   listAppointment: IAppointment[];
   listService: IService[];
+  listDoctor: any[];
 }

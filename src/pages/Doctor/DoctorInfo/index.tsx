@@ -1,5 +1,6 @@
-import { Descriptions, Form, Input, Modal } from 'antd';
-import React, { useState } from 'react';
+import { Descriptions } from 'antd';
+import React from 'react';
+import { useAppSelector } from '../../hook';
 
 interface Doctor {
   id: number;
@@ -12,71 +13,77 @@ interface Doctor {
 }
 
 const DoctorInfo: React.FC = () => {
-  const [doctor, setDoctor] = useState<Doctor | null>(null);
-  const [isEditModalVisible, setIsEditModalVisible] = useState(false);
-  const [form] = Form.useForm();
+  // const [doctor, setDoctor] = useState<Doctor | null>(null);
+  // const [isEditModalVisible, setIsEditModalVisible] = useState(false);
+  // const [form] = Form.useForm();
+  const userInfo = useAppSelector((state) => state.auth.user);
 
   // Thông tin mẫu
-  const initialDoctorInfo: Doctor = {
-    id: 1,
-    name: 'Dr. John Doe',
-    specialty: 'Cardiologist',
-    experience: 10,
-    address: '123 Main St',
-    phoneNumber: '555-1234',
-  };
+  // const initialDoctorInfo: Doctor = {
+  //   id: 1,
+  //   name: 'Dr. John Doe',
+  //   specialty: 'Cardiologist',
+  //   experience: 10,
+  //   address: '123 Main St',
+  //   phoneNumber: '555-1234',
+  // };
 
   // Khởi tạo thông tin mẫu khi component được tạo
-  useState(() => {
-    setDoctor(initialDoctorInfo);
-  });
+  // useState(() => {
+  //   setDoctor(initialDoctorInfo);
+  // });
 
-  const showEditModal = () => {
-    setIsEditModalVisible(true);
-    form.setFieldsValue({
-      name: doctor?.name,
-      specialty: doctor?.specialty,
-      experience: doctor?.experience,
-      address: doctor?.address,
-      phoneNumber: doctor?.phoneNumber,
-    });
-  };
+  // const showEditModal = () => {
+  //   setIsEditModalVisible(true);
+  //   form.setFieldsValue({
+  //     name: doctor?.name,
+  //     specialty: doctor?.specialty,
+  //     experience: doctor?.experience,
+  //     address: doctor?.address,
+  //     phoneNumber: doctor?.phoneNumber,
+  //   });
+  // };
 
-  const handleEditOk = () => {
-    form.validateFields().then((values) => {
-      const updatedDoctor: Doctor = {
-        ...doctor!,
-        ...values,
-      };
-      setDoctor(updatedDoctor);
-      setIsEditModalVisible(false);
-    });
-  };
+  // const handleEditOk = () => {
+  //   form.validateFields().then((values) => {
+  //     const updatedDoctor: Doctor = {
+  //       ...doctor!,
+  //       ...values,
+  //     };
+  //     setDoctor(updatedDoctor);
+  //     setIsEditModalVisible(false);
+  //   });
+  // };
 
-  const handleEditCancel = () => {
-    setIsEditModalVisible(false);
-  };
+  // const handleEditCancel = () => {
+  //   setIsEditModalVisible(false);
+  // };
 
   return (
     <>
       <Descriptions title="Doctor Info">
-        <Descriptions.Item label="ID">{doctor?.id}</Descriptions.Item>
-        <Descriptions.Item label="Name">{doctor?.name}</Descriptions.Item>
+        <Descriptions.Item label="ID">{userInfo?.id}</Descriptions.Item>
+        <Descriptions.Item label="Name">{userInfo?.fullname}</Descriptions.Item>
+        <Descriptions.Item label="Phone Number">
+          {userInfo?.phone}
+        </Descriptions.Item>
         <Descriptions.Item label="Specialty">
-          {doctor?.specialty}
+          {userInfo?.doctor?.speciality}
+        </Descriptions.Item>
+        <Descriptions.Item label="Degree">
+          {userInfo?.doctor?.degree}
         </Descriptions.Item>
         <Descriptions.Item label="Experience (years)">
-          {doctor?.experience}
+          {userInfo?.doctor?.experience}
         </Descriptions.Item>
-        <Descriptions.Item label="Address">{doctor?.address}</Descriptions.Item>
-        <Descriptions.Item label="Phone Number">
-          {doctor?.phoneNumber}
+        <Descriptions.Item label="Address">
+          {userInfo?.address}
         </Descriptions.Item>
       </Descriptions>
       {/* <Button type="primary" onClick={showEditModal} style={{ marginTop: 16 }}>
                 Edit Info
             </Button> */}
-
+      {/* 
       <Modal
         title="Edit Doctor Info"
         visible={isEditModalVisible}
@@ -119,7 +126,7 @@ const DoctorInfo: React.FC = () => {
             <Input />
           </Form.Item>
         </Form>
-      </Modal>
+      </Modal> */}
     </>
   );
 };

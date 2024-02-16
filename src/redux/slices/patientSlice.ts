@@ -7,6 +7,7 @@ import api from '../services/api';
 const initialState: Patient = {
   listAppointment: [],
   listService: [],
+  listDoctor: [],
 };
 
 export const getListAppointmentAsync = createAsyncThunk(
@@ -20,6 +21,14 @@ export const getListServiceAsync = createAsyncThunk(
   'Patient/getListService',
   async () => {
     const response = await api.getListService();
+    return response.data;
+  }
+);
+
+export const getListDoctorAsync = createAsyncThunk(
+  'Patient/getListDoctor',
+  async (body: IGetList) => {
+    const response = await api.getListDoctorPatient(body);
     return response.data;
   }
 );
@@ -50,6 +59,16 @@ export const patientSlice = createSlice({
       })
       .addCase(getListServiceAsync.fulfilled, (state, action) => {
         state.listService = action?.payload?.data;
+      })
+      .addCase(getListDoctorAsync.fulfilled, (state, action) => {
+        const doctors = action?.payload?.data?.map((item) => ({
+          ...item,
+          speciality: item.doctor.speciality,
+          degree: item.doctor.degree,
+          experience: item.doctor.experience,
+          birthday: formatDate(item.birthday),
+        }));
+        state.listDoctor = doctors;
       });
   },
 });
