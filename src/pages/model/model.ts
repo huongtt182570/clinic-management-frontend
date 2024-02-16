@@ -23,6 +23,13 @@ export interface IAddDoctor {
   experience: string;
 }
 
+export interface IUpdateDoctor {
+  id: number;
+  speciality: string;
+  degree: string;
+  experience: string;
+}
+
 export interface IService {
   id?: number;
   name: string;

@@ -5,6 +5,7 @@ import {
   IGetList,
   ILogin,
   IService,
+  IUpdateDoctor,
 } from '../../pages/model/model';
 import { IChangeInfo } from '../../pages/model/patientModel';
 import fetchHandler, { API_URL } from './axios';
@@ -12,6 +13,11 @@ import fetchHandler, { API_URL } from './axios';
 export const addDoctor = (body?: IAddDoctor) => {
   return fetchHandler.post(`${API_URL}/admin/doctor`, body);
 };
+
+export const updateDoctor = (body?: IUpdateDoctor) => {
+  return fetchHandler.put(`${API_URL}/admin/doctor/${body?.id}`, body);
+};
+
 export const login = (body: ILogin) => {
   return fetchHandler.post(`${API_URL}/auth/signin`, body);
 };
@@ -53,6 +59,10 @@ export const editService = (body: IService) => {
   return fetchHandler.put(`${API_URL}/medical-service/${body.id}`, body);
 };
 
+export const deleteDoctor = (id: number) => {
+  return fetchHandler.delete(`${API_URL}/admin/doctor/${id}`);
+};
+
 export const deleteService = (id: number) => {
   return fetchHandler.delete(`${API_URL}/medical-service/${id}`);
 };
@@ -74,7 +84,7 @@ export const bookeAppointment = (body: IBookAppointment) => {
 };
 
 export default {
-  //   updateDoctor,
+  updateDoctor,
   login,
   register,
   getUserInfo,
@@ -90,4 +100,5 @@ export default {
   changeUserInfo,
   getListAppointment,
   bookeAppointment,
+  deleteDoctor,
 };

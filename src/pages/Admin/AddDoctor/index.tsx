@@ -1,23 +1,24 @@
+import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
 import {
   Button,
   DatePicker,
-  Dropdown,
   Form,
   Input,
   Modal,
+  Popconfirm,
   Table,
   notification,
-  Popconfirm
 } from 'antd';
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
   addDoctorAsync,
+  deleteDoctorAsync,
   getListDoctorAdmin,
   resetListDoctorAdmin,
+  updateDoctorAsync,
 } from '../../../redux/slices/adminSlice';
 import { useAppDispatch, useAppSelector } from '../../hook';
-import { EditOutlined, DeleteOutlined } from '@ant-design/icons';
 
 interface Doctor {
   id: number;
@@ -46,6 +47,7 @@ const AddDoctor: React.FC = () => {
   const [form] = Form.useForm();
   // const [newDoctor, setNewDoctor] = useState<IAddDoctor>();
 
+  const [isEdit, setIsEdit] = useState(false);
   const [detailVisible, setDetailVisible] = useState(false);
   const [selectedPatient, setSelectedPatient] = useState<Doctor | null>(null);
 
@@ -53,11 +55,14 @@ const AddDoctor: React.FC = () => {
     setSelectedPatient(doctors);
     setDetailVisible(true);
   };
-
-  const handleDelete = (doctorId: number) => {
-    // Thực hiện logic xóa bác sĩ với doctorId đã được truyền vào
-    console.log('Deleting doctor with ID:', doctorId);
-    // Đưa phần logic xóa bác sĩ vào đây
+  const handleDelete = async (key: number) => {
+    const res = await dispatch(deleteDoctorAsync(key));
+    if (res?.payload?.success) {
+      notification.success({ message: 'Xoá bác sĩ thành công.' });
+      dispatch(getListDoctorAdmin({ page: 1, pageSize: 10 }));
+    } else {
+      notification.error({ message: 'Lỗi xảy ra khi xoá bác sĩ.' });
+    }
   };
 
   const dataSource = [
@@ -96,7 +101,11 @@ const AddDoctor: React.FC = () => {
       key: 'action',
       render: (_: any, record: Doctor) => (
         <div>
-          <Button type="link" onClick={() => handleEdit(record)} icon={<EditOutlined />} />
+          <Button
+            type="link"
+            onClick={() => handleEdit(record)}
+            icon={<EditOutlined />}
+          />
           <Popconfirm
             title="Bạn có chắc chắn muốn xóa?"
             onConfirm={() => handleDelete(record.id)}
@@ -116,14 +125,24 @@ const AddDoctor: React.FC = () => {
 
   const handleOk = () => {
     form.validateFields().then(async (values) => {
-      const res = await dispatch(addDoctorAsync(values));
-      if (res?.payload?.success) {
-        notification.success({ message: 'Thêm bác sĩ thành công.' });
-        dispatch(getListDoctorAdmin({ page: 1, pageSize: 10 }));
-        setIsModalVisible(false);
-        // navigate('/');
+      if (isEdit) {
+        const res = await dispatch(updateDoctorAsync(values));
+        if (res?.payload?.success) {
+          notification.success({ message: 'Sửa bác sĩ thành công.' });
+          dispatch(getListDoctorAdmin({ page: 1, pageSize: 10 }));
+          setIsModalVisible(false);
+        } else {
+          notification.error({ message: 'Lỗi xảy ra khi sửa bác sĩ.' });
+        }
       } else {
-        notification.error({ message: 'Lỗi xảy ra khi thêm bác sĩ.' });
+        const res = await dispatch(addDoctorAsync(values));
+        if (res?.payload?.success) {
+          notification.success({ message: 'Thêm bác sĩ thành công.' });
+          dispatch(getListDoctorAdmin({ page: 1, pageSize: 10 }));
+          setIsModalVisible(false);
+        } else {
+          notification.error({ message: 'Lỗi xảy ra khi thêm bác sĩ.' });
+        }
       }
     });
   };
@@ -134,7 +153,9 @@ const AddDoctor: React.FC = () => {
   };
 
   const handleEdit = (record: Doctor) => {
-    // Implement your edit logic here
+    setIsModalVisible(true);
+    setIsEdit(true);
+    form.setFieldsValue(record);
     console.log('Editing doctor:', record);
   };
 
@@ -157,14 +178,15 @@ const AddDoctor: React.FC = () => {
         onCancel={handleCancel}
       >
         <Form form={form} labelCol={{ span: 8 }} wrapperCol={{ span: 16 }}>
+          <Form.Item label="Id" name="id">
+            <Input disabled />
+          </Form.Item>
           <Form.Item
             label="Tên đầy đủ"
             name="fullname"
-            rules={[
-              { required: true, message: 'Bạn chưa điền tên đầy đủ!' },
-            ]}
+            rules={[{ required: true, message: 'Bạn chưa điền tên đầy đủ!' }]}
           >
-            <Input />
+            <Input disabled={isEdit} />
           </Form.Item>
           <Form.Item
             label="Số điện thoại"
@@ -176,40 +198,37 @@ const AddDoctor: React.FC = () => {
               },
             ]}
           >
-            <Input type="number" />
+            <Input type="number" disabled={isEdit} />
           </Form.Item>
           <Form.Item
             label="Email"
             name="email"
-            rules={[
-              { required: true, message: 'Bạn chưa điền email!' },
-            ]}
+            rules={[{ message: 'Bạn chưa điền email!' }]}
           >
-            <Input />
+            <Input disabled={isEdit} />
           </Form.Item>
           <Form.Item
             label="Địa chỉ"
             name="address"
             rules={[
               {
-                required: true,
+                // required: true,
                 message: 'Bạn chưa điền địa chỉ!',
               },
             ]}
           >
-            <Input />
+            <Input disabled={isEdit} />
           </Form.Item>
           <Form.Item
             label="Ngày sinh"
             name="birthday"
             rules={[
               {
-                required: true,
                 message: 'Bạn chưa điền ngày sinh!',
               },
             ]}
           >
-            <DatePicker />
+            <DatePicker disabled={isEdit} />
           </Form.Item>
           {/* <Form.Item
             label="gender"
@@ -261,10 +280,18 @@ const AddDoctor: React.FC = () => {
         <Table
           dataSource={[dataSource[0]]} // Dùng [dataSource[0]] để chỉ hiển thị thông tin cho bệnh nhân đầu tiên trong ví dụ
           columns={[
-            { title: 'Dịch vụ khám', dataIndex: 'serviceName', key: 'serviceName' },
+            {
+              title: 'Dịch vụ khám',
+              dataIndex: 'serviceName',
+              key: 'serviceName',
+            },
             { title: 'Bác sĩ phụ trách', dataIndex: 'doctor', key: 'doctor' },
             // { title: 'Chuẩn đoán bệnh', dataIndex: 'diagnosis', key: 'diagnosis' },
-            { title: 'Thời gian khám', dataIndex: 'appointmentTime', key: 'appointmentTime' },
+            {
+              title: 'Thời gian khám',
+              dataIndex: 'appointmentTime',
+              key: 'appointmentTime',
+            },
           ]}
         />
       </Modal>

@@ -1,6 +1,5 @@
 // AddPatient.tsx
-import { DeleteOutlined } from '@ant-design/icons';
-import { DatePicker, Form, Input, Modal, Space, Table, TimePicker } from 'antd';
+import { DatePicker, Form, Input, Modal, Table, TimePicker } from 'antd';
 import React, { useEffect, useState } from 'react';
 import {
   getListPatientAdmin,
@@ -114,13 +113,8 @@ const AddPatient: React.FC = () => {
     setIsModalVisible(false);
   };
 
-  const handleDelete = (key: number) => {
-    setPatients(patients.filter((patient) => patient.key !== key));
-  };
-
   return (
     <div>
-
       <Table dataSource={listPatient} columns={columns} pagination={false} />
 
       <Modal

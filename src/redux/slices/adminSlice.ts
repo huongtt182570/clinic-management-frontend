@@ -1,6 +1,11 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { Admin } from '../../pages/model/adminModel';
-import { IAddDoctor, IGetList, IService } from '../../pages/model/model';
+import {
+  IAddDoctor,
+  IGetList,
+  IService,
+  IUpdateDoctor,
+} from '../../pages/model/model';
 import api from '../services/api';
 
 const initialState: Admin = {
@@ -58,6 +63,21 @@ export const addDoctorAsync = createAsyncThunk(
     return response.data;
   }
 );
+export const updateDoctorAsync = createAsyncThunk(
+  'admin/updateDoctor',
+  async (body: IUpdateDoctor) => {
+    const response = await api.updateDoctor(body);
+    return response.data;
+  }
+);
+
+export const deleteDoctorAsync = createAsyncThunk(
+  'admin/deleteDoctor',
+  async (id: number) => {
+    const response = await api.deleteDoctor(id);
+    return response.data;
+  }
+);
 
 export const adminSlice = createSlice({
   name: 'AdminSlice',
@@ -74,7 +94,13 @@ export const adminSlice = createSlice({
   extraReducers: (builder) => {
     builder
       .addCase(getListDoctorAdmin.fulfilled, (state, action) => {
-        state.listDoctor = action?.payload?.data;
+        const doctors = action?.payload?.data?.map((item) => ({
+          ...item,
+          speciality: item.doctor.speciality,
+          degree: item.doctor.degree,
+          experience: item.doctor.experience,
+        }));
+        state.listDoctor = doctors;
       })
       .addCase(getListPatientAdmin.fulfilled, (state, action) => {
         state.listPatient = action?.payload?.data;
