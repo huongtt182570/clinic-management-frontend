@@ -1,5 +1,7 @@
 import {
   IAddDoctor,
+  IBookAppointment,
+  IChangePassword,
   IGetList,
   ILogin,
   IService,
@@ -24,7 +26,7 @@ export const changeUserInfo = (body: IChangeInfo) => {
   return fetchHandler.put(`${API_URL}/user`, body);
 };
 
-export const changePassword = (body: any) => {
+export const changePassword = (body: IChangePassword) => {
   return fetchHandler.put(`${API_URL}/user/change-password`, body);
 };
 //api admin
@@ -60,6 +62,17 @@ export const getListPendingAppointment = () => {
   return fetchHandler.get(`${API_URL}/doctor/appointments`);
 };
 
+//api patient
+export const getListAppointment = (body: IGetList) => {
+  return fetchHandler.get(
+    `${API_URL}/patient/appointments?page=${body.page}&pageSize=${body.pageSize}`
+  );
+};
+
+export const bookeAppointment = (body: IBookAppointment) => {
+  return fetchHandler.post(`${API_URL}/patient/appointment`, body);
+};
+
 export default {
   //   updateDoctor,
   login,
@@ -75,4 +88,6 @@ export default {
   deleteService,
   changePassword,
   changeUserInfo,
+  getListAppointment,
+  bookeAppointment,
 };

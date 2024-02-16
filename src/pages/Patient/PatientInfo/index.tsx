@@ -7,6 +7,7 @@ import {
   notification,
 } from 'antd';
 import { useState } from 'react';
+import { formatDate } from '../../../components/common/function';
 import {
   editUserInfoAsync,
   getUserInfoAsync,
@@ -24,7 +25,7 @@ const PatientInfo = () => {
     form.setFieldsValue({
       fullname: userInfo.fullname,
       phone: userInfo.phone,
-      birthday: userInfo.birthday,
+      // birthday: new Date(userInfo.birthday),
       address: userInfo.address,
       email: userInfo.email,
     });
@@ -33,9 +34,11 @@ const PatientInfo = () => {
   const handleSave = () => {
     form.validateFields().then(async (values) => {
       const res = await dispatch(editUserInfoAsync(values));
+      console.log(values.birthday);
       if (res?.payload?.success) {
         notification.success({ message: 'Sửa thông tin thành công' });
         dispatch(getUserInfoAsync());
+        form.resetFields();
         setIsEditing(false);
       } else {
         notification.error({ message: 'Lỗi xảy ra sửa thông tin' });
@@ -80,7 +83,7 @@ const PatientInfo = () => {
               </Form.Item>
             </Form>
           ) : (
-            userInfo.birthday || ''
+            formatDate(userInfo.birthday)
           )}
         </Descriptions.Item>
         <Descriptions.Item label="Address">

@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { authState } from '../../pages/model/authModel';
-import { ILogin } from '../../pages/model/model';
+import { IChangePassword, ILogin } from '../../pages/model/model';
 import { IChangeInfo } from '../../pages/model/patientModel';
 import api from '../services/api';
 
@@ -39,7 +39,7 @@ export const editUserInfoAsync = createAsyncThunk(
 );
 export const changePasswordAsync = createAsyncThunk(
   'auth/getUserInfo',
-  async (body: any) => {
+  async (body: IChangePassword) => {
     const response = await api.changePassword(body);
     return response.data;
   }

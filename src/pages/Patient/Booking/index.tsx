@@ -1,43 +1,71 @@
 // Booking.tsx
-import { Button, Card, DatePicker, Descriptions, Select } from 'antd';
+import {
+  Button,
+  Card,
+  DatePicker,
+  Descriptions,
+  Select,
+  notification,
+} from 'antd';
 import moment from 'moment';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import {
+  bookeAppointmentAsync,
+  getListServiceAsync,
+} from '../../../redux/slices/patientSlice';
+import { useAppDispatch, useAppSelector } from '../../hook';
 import { doctors } from './doctors';
-import { services } from './services';
 
 const { Option } = Select;
 
 const Booking: React.FC = () => {
-  const [selectedDoctor, setSelectedDoctor] = useState<string | null>(null);
-  const [selectedService, setSelectedService] = useState<string | null>(null);
+  const dispatch = useAppDispatch();
+  const [selectedDoctor, setSelectedDoctor] = useState<number | null>(null);
+  const [selectedService, setSelectedService] = useState<number | null>(null);
   const [selectedDate, setSelectedDate] = useState<any>(null);
-
-  const handleDoctorChange = (value: string) => {
+  const handleDoctorChange = (value: number) => {
     setSelectedDoctor(value);
   };
-
-  const handleServiceChange = (value: string) => {
+  const [showInfo, setShowInfo] = useState<boolean>(false);
+  const { listService } = useAppSelector((state) => state.patient);
+  const handleServiceChange = (value: number) => {
     setSelectedService(value);
   };
 
+  useEffect(() => {
+    dispatch(getListServiceAsync());
+  }, []);
   const handleDateChange = (date: any) => {
     setSelectedDate(date);
   };
 
-  const handleSave = () => {
+  const handleSave = async () => {
     // Thực hiện lưu thông tin đặt lịch và hiển thị
     // ở đây có thể gửi request đến server để lưu thông tin
 
     // Hiển thị thông tin đã đăng ký
     const bookedInfo = {
-      doctor: doctors.find((doctor) => doctor.id.toString() === selectedDoctor),
-      service: services.find(
-        (service) => service.id.toString() === selectedService
-      ),
+      doctor: doctors.find((doctor) => doctor.id === selectedDoctor),
+      service: listService.find((service) => service?.id === selectedService),
       date: selectedDate ? selectedDate.format('YYYY-MM-DD') : '',
     };
-
     console.log(bookedInfo);
+    const res = await dispatch(
+      bookeAppointmentAsync({
+        startTime: selectedDate,
+        doctorId: selectedDoctor || 0,
+        serviceId: selectedService || 0,
+      })
+    );
+    if (res?.payload?.success) {
+      notification.success({ message: 'Đặt lịch khám thành công.' });
+      setSelectedDoctor(null);
+      setSelectedDate(null);
+      setSelectedService(null);
+      // setShowInfo(true);
+    } else {
+      notification.error({ message: 'Lỗi xảy ra khi đặt lịch khám.' });
+    }
   };
 
   return (
@@ -49,7 +77,7 @@ const Booking: React.FC = () => {
           onChange={handleDoctorChange}
         >
           {doctors.map((doctor) => (
-            <Option key={doctor.id} value={doctor.id.toString()}>
+            <Option key={doctor.id} value={doctor.id}>
               {doctor.name}
             </Option>
           ))}
@@ -59,8 +87,8 @@ const Booking: React.FC = () => {
           placeholder="Chọn dịch vụ"
           onChange={handleServiceChange}
         >
-          {services.map((service) => (
-            <Option key={service.id} value={service.id.toString()}>
+          {listService.map((service) => (
+            <Option key={service.id} value={service.id}>
               {service.name}
             </Option>
           ))}
@@ -74,21 +102,16 @@ const Booking: React.FC = () => {
           Lưu
         </Button>
       </Card>
-      {selectedDoctor && selectedService && selectedDate && (
+      {showInfo && (
         <Card style={{ marginTop: 16 }}>
           <Descriptions title="Thông tin đặt lịch">
             <Descriptions.Item label="Bác sĩ">
-              {
-                doctors.find(
-                  (doctor) => doctor.id.toString() === selectedDoctor
-                )?.name
-              }
+              {doctors.find((doctor) => doctor.id === selectedDoctor)?.name}
             </Descriptions.Item>
             <Descriptions.Item label="Dịch vụ">
               {
-                services.find(
-                  (service) => service.id.toString() === selectedService
-                )?.name
+                listService.find((service) => service.id === selectedService)
+                  ?.name
               }
             </Descriptions.Item>
             <Descriptions.Item label="Ngày">
