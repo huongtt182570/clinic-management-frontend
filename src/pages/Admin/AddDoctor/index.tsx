@@ -6,11 +6,12 @@ import {
   Input,
   Modal,
   Popconfirm,
+  Select,
   Table,
   notification,
 } from 'antd';
 import React, { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { renderGender } from '../../../components/common/function';
 import {
   addDoctorAsync,
   deleteDoctorAsync,
@@ -28,7 +29,6 @@ interface Doctor {
 }
 
 const AddDoctor: React.FC = () => {
-  const navigate = useNavigate();
   const dispatch = useAppDispatch();
   useEffect(() => {
     dispatch(
@@ -41,20 +41,13 @@ const AddDoctor: React.FC = () => {
       dispatch(resetListDoctorAdmin());
     };
   }, []);
-  const [doctors, setDoctors] = useState<Doctor[]>([]);
   const { listDoctor = [] } = useAppSelector((state) => state.admin);
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [form] = Form.useForm();
   // const [newDoctor, setNewDoctor] = useState<IAddDoctor>();
 
   const [isEdit, setIsEdit] = useState(false);
-  const [detailVisible, setDetailVisible] = useState(false);
-  const [selectedPatient, setSelectedPatient] = useState<Doctor | null>(null);
 
-  const showDetailModal = (doctors: Doctor) => {
-    setSelectedPatient(doctors);
-    setDetailVisible(true);
-  };
   const handleDelete = async (key: number) => {
     const res = await dispatch(deleteDoctorAsync(key));
     if (res?.payload?.success) {
@@ -84,7 +77,12 @@ const AddDoctor: React.FC = () => {
     // { title: 'ID', dataIndex: 'id', key: 'id' },
     { title: 'Tên đầy đủ', dataIndex: 'fullname', key: 'fullname' },
     { title: 'Ngày sinh', dataIndex: 'birthday', key: 'birthday' },
-    { title: 'Giới tính', dataIndex: 'gender', key: 'gender' },
+    {
+      title: 'Giới tính',
+      dataIndex: 'gender',
+      key: 'gender',
+      render: (value: string) => <div>{renderGender(value)}</div>,
+    },
     { title: 'Email', dataIndex: 'email', key: 'email' },
     { title: 'Chuyên môn', dataIndex: 'speciality', key: 'speciality' },
     { title: 'Bằng cấp', dataIndex: 'degree', key: 'degree' },
@@ -162,11 +160,6 @@ const AddDoctor: React.FC = () => {
     console.log('Editing doctor:', record);
   };
 
-  const items = [
-    { lable: 'male', key: 'MALE' },
-    { label: 'Female', key: 'FEMALE' },
-    { label: 'Other', key: 'OTHER' },
-  ];
   return (
     <div>
       <Button type="primary" onClick={showModal} style={{ marginBottom: 16 }}>
@@ -236,7 +229,7 @@ const AddDoctor: React.FC = () => {
           >
             <DatePicker disabled={isEdit} />
           </Form.Item>
-          {/* <Form.Item
+          <Form.Item
             label="Giới tính"
             name="gender"
             rules={[
@@ -246,8 +239,12 @@ const AddDoctor: React.FC = () => {
               },
             ]}
           >
-            <Dropdown menu={{ items }} />
-          </Form.Item> */}
+            <Select>
+              <Select.Option value="FEMALE">Nữ</Select.Option>
+              <Select.Option value="MALE">Nam</Select.Option>
+              <Select.Option value="OTHER">Khác</Select.Option>
+            </Select>
+          </Form.Item>
           <Form.Item
             label="Email"
             name="email"

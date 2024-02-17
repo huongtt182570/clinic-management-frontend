@@ -1,5 +1,6 @@
 import {
   IAddDoctor,
+  IAddRelationship,
   IBookAppointment,
   IChangePassword,
   IGetList,
@@ -67,6 +68,10 @@ export const deleteService = (id: number) => {
   return fetchHandler.delete(`${API_URL}/medical-service/${id}`);
 };
 
+export const addRelationship = (body: IAddRelationship) => {
+  return fetchHandler.post(`${API_URL}/medical-service/doctor-service`, body);
+};
+
 //api doctor
 export const getListPendingAppointment = () => {
   return fetchHandler.get(`${API_URL}/doctor/appointments`);
@@ -120,4 +125,5 @@ export default {
   deleteDoctor,
   getListDoctorPatient,
   cancelAppointmentPatient,
+  addRelationship,
 };

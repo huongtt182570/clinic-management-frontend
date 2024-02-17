@@ -12,3 +12,10 @@ export const formatDate = (
   }
   return '';
 };
+
+export const renderGender = (gender: string) => {
+  if (gender === 'FEMALE') return 'Nữ';
+  if (gender === 'MALE') return 'Nam';
+  if (gender === 'OTHER') return 'Khác';
+  return '';
+};

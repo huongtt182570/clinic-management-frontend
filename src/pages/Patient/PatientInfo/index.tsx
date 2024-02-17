@@ -4,10 +4,11 @@ import {
   Descriptions,
   Form,
   Input,
+  Select,
   notification,
 } from 'antd';
 import { useState } from 'react';
-import { formatDate } from '../../../components/common/function';
+import { formatDate, renderGender } from '../../../components/common/function';
 import {
   editUserInfoAsync,
   getUserInfoAsync,
@@ -84,6 +85,21 @@ const PatientInfo = () => {
             </Form>
           ) : (
             formatDate(userInfo.birthday)
+          )}
+        </Descriptions.Item>
+        <Descriptions.Item label="Giới tính">
+          {isEditing ? (
+            <Form form={form} name="userInfoForm">
+              <Form.Item name="gender" style={{ width: '100px' }}>
+                <Select>
+                  <Select.Option value="FEMALE">Nữ</Select.Option>
+                  <Select.Option value="MALE">Nam</Select.Option>
+                  <Select.Option value="OTHER">Khác</Select.Option>
+                </Select>
+              </Form.Item>
+            </Form>
+          ) : (
+            renderGender(userInfo.gender)
           )}
         </Descriptions.Item>
         <Descriptions.Item label="Địa chỉ">

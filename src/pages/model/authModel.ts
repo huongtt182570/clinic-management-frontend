@@ -6,8 +6,8 @@ export interface authState {
     email: string;
     address: string;
     birthday: string;
-    // gender:"OTHER"
+    gender: string;
     role: string;
-    doctor: any;
+    doctor?: any;
   };
 }
