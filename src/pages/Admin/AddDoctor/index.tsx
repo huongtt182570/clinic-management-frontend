@@ -8,6 +8,7 @@ import {
   Popconfirm,
   Table,
   notification,
+  Dropdown,
 } from 'antd';
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
@@ -84,17 +85,18 @@ const AddDoctor: React.FC = () => {
     // { title: 'ID', dataIndex: 'id', key: 'id' },
     { title: 'Tên đầy đủ', dataIndex: 'fullname', key: 'fullname' },
     { title: 'Ngày sinh', dataIndex: 'birthday', key: 'birthday' },
-    // { title: 'Giới tính', dataIndex: 'gender', key: 'gender' },
+    { title: 'Giới tính', dataIndex: 'gender', key: 'gender' },
+    { title: 'Email', dataIndex: 'email', key: 'email' },
     { title: 'Chuyên môn', dataIndex: 'speciality', key: 'speciality' },
     { title: 'Bằng cấp', dataIndex: 'degree', key: 'degree' },
     { title: 'Kinh nghiệm (năm)', dataIndex: 'experience', key: 'experience' },
     { title: 'Số điện thoại', dataIndex: 'phone', key: 'phone' },
-    // {
-    //   title: 'Lịch trình',
-    //   dataIndex: 'appointmentDate',
-    //   key: 'appointmentDate',
-    //   render: () => <a onClick={() => setModalVisible(true)}>Chi tiết</a>,
-    // },
+    {
+      title: 'Lịch trình',
+      dataIndex: 'appointmentDate',
+      key: 'appointmentDate',
+      render: () => <a onClick={() => setModalVisible(true)}>Chi tiết</a>,
+    },
     {
       title: 'Hành động',
       dataIndex: 'action',
@@ -235,7 +237,7 @@ const AddDoctor: React.FC = () => {
           >
             <DatePicker disabled={isEdit} />
           </Form.Item>
-          {/* <Form.Item
+          <Form.Item
             label="gender"
             name="gender"
             rules={[
@@ -246,7 +248,15 @@ const AddDoctor: React.FC = () => {
             ]}
           >
             <Dropdown menu={{ items }} />
-          </Form.Item> */}
+
+            <Form.Item
+              label="Email"
+              name="email"
+              rules={[{ required: true, message: 'Bạn chưa điền email!' }]}
+            >
+              <Input />
+            </Form.Item>
+          </Form.Item>
           <Form.Item
             label="Chuyên môn"
             name="speciality"
@@ -286,16 +296,23 @@ const AddDoctor: React.FC = () => {
           dataSource={[dataSource[0]]} // Dùng [dataSource[0]] để chỉ hiển thị thông tin cho bệnh nhân đầu tiên trong ví dụ
           columns={[
             {
+              title: 'Tên bệnh nhân',
+            },
+            {
+              title: 'Số điện thoại bệnh nhân',
+            },
+            {
               title: 'Dịch vụ khám',
               dataIndex: 'serviceName',
               key: 'serviceName',
             },
-            { title: 'Bác sĩ phụ trách', dataIndex: 'doctor', key: 'doctor' },
-            // { title: 'Chuẩn đoán bệnh', dataIndex: 'diagnosis', key: 'diagnosis' },
             {
               title: 'Thời gian khám',
               dataIndex: 'appointmentTime',
               key: 'appointmentTime',
+            },
+            {
+              title: 'Tình trạng khám',
             },
           ]}
         />

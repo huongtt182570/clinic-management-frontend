@@ -52,7 +52,6 @@ const AddPatient: React.FC = () => {
     setSelectedPatient(null);
     setDetailVisible(false);
   };
-
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [form] = Form.useForm();
   const dispatch = useAppDispatch();
@@ -67,17 +66,17 @@ const AddPatient: React.FC = () => {
   const columns = [
     { title: 'Họ và tên', dataIndex: 'fullname', key: 'fullname' },
     { title: 'Ngày sinh', dataIndex: 'birthday', key: 'birthday' },
-    // { title: 'Giới tính', dataIndex: 'gender', key: 'gender' },
+    { title: 'Giới tính', dataIndex: 'gender', key: 'gender' },
     { title: 'Số điện thoại', dataIndex: 'phone', key: 'phone' },
     { title: 'Email', dataIndex: 'email', key: 'email' },
-    // {
-    //   title: 'Lịch sử khám',
-    //   dataIndex: 'medicalHistory',
-    //   key: 'medicalHistory',
-    //   render: (_: any, record: Patient) => (
-    //     <a onClick={() => showDetailModal(record)}>Chi tiết</a>
-    //   ),
-    // },
+    {
+      title: 'Lịch sử khám',
+      dataIndex: 'medicalHistory',
+      key: 'medicalHistory',
+      render: (_: any, record: Patient) => (
+        <a onClick={() => showDetailModal(record)}>Chi tiết</a>
+      ),
+    },
 
     // {
     //   title: 'Trạng thái cuộc hẹn',
@@ -164,6 +163,22 @@ const AddPatient: React.FC = () => {
             <TimePicker format="HH:mm" />
           </Form.Item>
         </Form>
+      </Modal>
+
+      <Modal
+        title="Chi tiết lịch sử khám"
+        visible={detailVisible}
+        onCancel={handleDetailCancel}
+        footer={null}
+      >
+        {selectedPatient && (
+          <div>
+            <p><strong>Dịch vụ khám:</strong> {selectedPatient.name}</p>
+            <p><strong>Bác sĩ khám:</strong> </p>
+            <p><strong>Thời gian khám:</strong> {selectedPatient.appointmentTime}</p>
+            <p><strong>Trạng thái:</strong> </p>
+          </div>
+        )}
       </Modal>
     </div>
   );

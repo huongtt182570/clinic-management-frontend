@@ -86,7 +86,7 @@ const PatientInfo = () => {
             formatDate(userInfo.birthday)
           )}
         </Descriptions.Item>
-        <Descriptions.Item label="Address">
+        <Descriptions.Item label="Địa chỉ">
           {isEditing ? (
             <Form form={form} name="userInfoForm">
               <Form.Item name="address">

@@ -1,19 +1,7 @@
-// Booking.tsx
-import {
-  Button,
-  Card,
-  DatePicker,
-  Descriptions,
-  Select,
-  notification,
-} from 'antd';
+import { Button, Card, DatePicker, Descriptions, Select, Table, notification } from 'antd';
 import moment from 'moment';
 import React, { useEffect, useState } from 'react';
-import {
-  bookeAppointmentAsync,
-  getListDoctorAsync,
-  getListServiceAsync,
-} from '../../../redux/slices/patientSlice';
+import { bookeAppointmentAsync, getListDoctorAsync, getListServiceAsync } from '../../../redux/slices/patientSlice';
 import { useAppDispatch, useAppSelector } from '../../hook';
 
 const { Option } = Select;
@@ -23,11 +11,14 @@ const Booking: React.FC = () => {
   const [selectedDoctor, setSelectedDoctor] = useState<number | null>(null);
   const [selectedService, setSelectedService] = useState<number | null>(null);
   const [selectedDate, setSelectedDate] = useState<any>(null);
+  const [showInfo, setShowInfo] = useState<boolean>(false);
+  const { listService, listDoctor } = useAppSelector((state) => state.patient);
+  const [appointmentHistory, setAppointmentHistory] = useState<any[]>([]); // Thêm state để lưu lịch sử khám bệnh nhân
+
   const handleDoctorChange = (value: number) => {
     setSelectedDoctor(value);
   };
-  const [showInfo, setShowInfo] = useState<boolean>(false);
-  const { listService, listDoctor } = useAppSelector((state) => state.patient);
+
   const handleServiceChange = (value: number) => {
     setSelectedService(value);
   };
@@ -36,21 +27,12 @@ const Booking: React.FC = () => {
     dispatch(getListServiceAsync());
     dispatch(getListDoctorAsync({ page: 1, pageSize: 10 }));
   }, []);
+
   const handleDateChange = (date: any) => {
     setSelectedDate(date);
   };
 
   const handleSave = async () => {
-    // Thực hiện lưu thông tin đặt lịch và hiển thị
-    // ở đây có thể gửi request đến server để lưu thông tin
-
-    // Hiển thị thông tin đã đăng ký
-    const bookedInfo = {
-      doctor: listDoctor.find((doctor) => doctor.id === selectedDoctor),
-      service: listService.find((service) => service?.id === selectedService),
-      date: selectedDate ? selectedDate.format('YYYY-MM-DD') : '',
-    };
-    console.log(bookedInfo);
     const res = await dispatch(
       bookeAppointmentAsync({
         startTime: selectedDate,
@@ -63,11 +45,42 @@ const Booking: React.FC = () => {
       setSelectedDoctor(null);
       setSelectedDate(null);
       setSelectedService(null);
-      // setShowInfo(true);
+      setShowInfo(true);
+      // Thêm dữ liệu lịch sử khám mới vào state
+      const newAppointment = {
+        time: selectedDate ? selectedDate.format('YYYY-MM-DD') : '',
+        doctor: listDoctor.find((doctor) => doctor.id === selectedDoctor)?.fullname,
+        service: listService.find((service) => service?.id === selectedService)?.name,
+        status: 'Chờ khám', // Thêm trạng thái khám mặc định
+      };
+      setAppointmentHistory([...appointmentHistory, newAppointment]);
     } else {
       notification.error({ message: 'Lỗi xảy ra khi đặt lịch khám.' });
     }
   };
+
+  const columns = [
+    {
+      title: 'Thời gian',
+      dataIndex: 'time',
+      key: 'time',
+    },
+    {
+      title: 'Bác sĩ phụ trách',
+      dataIndex: 'doctor',
+      key: 'doctor',
+    },
+    {
+      title: 'Dịch vụ khám',
+      dataIndex: 'service',
+      key: 'service',
+    },
+    {
+      title: 'Trạng thái',
+      dataIndex: 'status',
+      key: 'status',
+    },
+  ];
 
   return (
     <div>
@@ -107,13 +120,10 @@ const Booking: React.FC = () => {
         <Card style={{ marginTop: 16 }}>
           <Descriptions title="Thông tin đặt lịch">
             <Descriptions.Item label="Bác sĩ">
-              {listDoctor.find((doctor) => doctor.id === selectedDoctor)?.name}
+              {listDoctor.find((doctor) => doctor.id === selectedDoctor)?.fullname}
             </Descriptions.Item>
             <Descriptions.Item label="Dịch vụ">
-              {
-                listService.find((service) => service.id === selectedService)
-                  ?.name
-              }
+              {listService.find((service) => service.id === selectedService)?.name}
             </Descriptions.Item>
             <Descriptions.Item label="Ngày">
               {selectedDate?.format('YYYY-MM-DD')}
@@ -121,6 +131,11 @@ const Booking: React.FC = () => {
           </Descriptions>
         </Card>
       )}
+
+      {/* Hiển thị bảng lịch sử khám bệnh nhân */}
+      <Card title="Lịch sử khám bệnh nhân" style={{ marginTop: 16 }}>
+        <Table dataSource={appointmentHistory} columns={columns} />
+      </Card>
     </div>
   );
 };

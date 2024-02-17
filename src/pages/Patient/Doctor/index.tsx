@@ -24,12 +24,12 @@ const BookingDoctor: React.FC = () => {
     { title: 'Bằng cấp', dataIndex: 'degree', key: 'degree' },
     { title: 'Kinh nghiệm (năm)', dataIndex: 'experience', key: 'experience' },
     { title: 'Số điện thoại', dataIndex: 'phone', key: 'phone' },
-    // {
-    //   title: 'Lịch trình',
-    //   dataIndex: 'appointmentDate',
-    //   key: 'appointmentDate',
-    //   render: () => <a onClick={() => showDetailModal()}>Chi tiết</a>,
-    // },
+    {
+      title: 'Lịch trình',
+      dataIndex: 'appointmentDate',
+      key: 'appointmentDate',
+      render: () => <a onClick={() => showDetailModal()}>Chi tiết</a>,
+    },
   ];
 
   const [modalVisible, setModalVisible] = useState<boolean>(false);
@@ -71,12 +71,13 @@ const BookingDoctor: React.FC = () => {
           dataSource={dataSource} // Sử dụng dataSource từ state hoặc từ props tùy vào nơi bạn lấy dữ liệu
           columns={[
             {
+              title: 'Số thứ tự',
+            },
+            {
               title: 'Dịch vụ khám',
               dataIndex: 'serviceName',
               key: 'serviceName',
             },
-            { title: 'Bác sĩ phụ trách', dataIndex: 'doctor', key: 'doctor' },
-            // Thêm các cột khác tương ứng
             {
               title: 'Thời gian khám',
               dataIndex: 'appointmentTime',
