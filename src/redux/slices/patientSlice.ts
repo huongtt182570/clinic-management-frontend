@@ -8,6 +8,7 @@ const initialState: Patient = {
   listAppointment: [],
   listService: [],
   listDoctor: [],
+  listMedicalHistory: [],
 };
 
 export const getListAppointmentAsync = createAsyncThunk(
@@ -40,6 +41,20 @@ export const bookeAppointmentAsync = createAsyncThunk(
     return response.data;
   }
 );
+export const getListMedicalHistoryAsync = createAsyncThunk(
+  'Patient/getListHistory',
+  async (body: IGetList) => {
+    const response = await api.getMedicalHistory(body);
+    return response.data;
+  }
+);
+export const cancelAppointmentAsync = createAsyncThunk(
+  'Patient/cancelAppointment',
+  async (id: number) => {
+    const response = await api.cancelAppointmentPatient(id);
+    return response.data;
+  }
+);
 
 export const patientSlice = createSlice({
   name: 'PatientSlice',
@@ -63,12 +78,22 @@ export const patientSlice = createSlice({
       .addCase(getListDoctorAsync.fulfilled, (state, action) => {
         const doctors = action?.payload?.data?.map((item) => ({
           ...item,
+          id: item?.doctor.id,
           speciality: item.doctor.speciality,
           degree: item.doctor.degree,
           experience: item.doctor.experience,
           birthday: formatDate(item.birthday),
         }));
         state.listDoctor = doctors;
+      })
+      .addCase(getListMedicalHistoryAsync.fulfilled, (state, action) => {
+        const list = action?.payload?.data?.map((item) => ({
+          ...item,
+          admissionDate: formatDate(item?.admissionDate),
+          doctor: item?.doctor?.user?.fullname,
+          speciality: item?.doctor?.speciality,
+        }));
+        state.listMedicalHistory = list;
       });
   },
 });

@@ -25,7 +25,7 @@ const PatientInfo = () => {
     form.setFieldsValue({
       fullname: userInfo.fullname,
       phone: userInfo.phone,
-      // birthday: new Date(userInfo.birthday),
+      // birthday: new Date(formatDate(userInfo.birthday)),
       address: userInfo.address,
       email: userInfo.email,
     });
