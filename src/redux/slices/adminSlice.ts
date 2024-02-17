@@ -3,6 +3,7 @@ import { formatDate } from '../../components/common/function';
 import { Admin } from '../../pages/model/adminModel';
 import {
   IAddDoctor,
+  IAddRelationship,
   IGetList,
   IService,
   IUpdateDoctor,
@@ -76,6 +77,14 @@ export const deleteDoctorAsync = createAsyncThunk(
   'admin/deleteDoctor',
   async (id: number) => {
     const response = await api.deleteDoctor(id);
+    return response.data;
+  }
+);
+
+export const addRelationshipAsync = createAsyncThunk(
+  'admin/deleteDoctor',
+  async (body: IAddRelationship) => {
+    const response = await api.addRelationship(body);
     return response.data;
   }
 );

@@ -35,6 +35,7 @@ export interface IService {
   name: string;
   description: string;
   price: number;
+  doctors?: any[];
 }
 
 export interface IChangePassword {
@@ -46,4 +47,9 @@ export interface IBookAppointment {
   startTime: string;
   doctorId: number;
   serviceId: number;
+}
+
+export interface IAddRelationship {
+  serviceId: number;
+  doctorId: number;
 }

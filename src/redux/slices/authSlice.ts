@@ -19,7 +19,7 @@ const initialState: authState = {
     email: '',
     address: '',
     birthday: '',
-    // gender:"OTHER"
+    gender: '',
     role: '',
   },
 };

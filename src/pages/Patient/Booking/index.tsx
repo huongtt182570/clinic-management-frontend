@@ -3,7 +3,6 @@ import {
   Button,
   Card,
   DatePicker,
-  Descriptions,
   Popconfirm,
   Select,
   Table,
@@ -26,6 +25,12 @@ const { Option } = Select;
 
 const Booking: React.FC = () => {
   const dispatch = useAppDispatch();
+  const [listDoctorService, setListDoctorService] = useState<
+    {
+      id: number;
+      fullname: string;
+    }[]
+  >([]);
   const [selectedDoctor, setSelectedDoctor] = useState<number | null>(null);
   const [selectedService, setSelectedService] = useState<number | null>(null);
   const [selectedDate, setSelectedDate] = useState<any>(null);
@@ -39,6 +44,13 @@ const Booking: React.FC = () => {
   };
 
   const handleServiceChange = (value: number) => {
+    const doctorList = listService?.find((item) => item.id === value)?.doctors;
+    setListDoctorService(
+      doctorList?.map((item) => ({
+        id: item?.doctor?.id,
+        fullname: item?.doctor?.user?.fullname,
+      })) || []
+    );
     setSelectedService(value);
   };
 
@@ -66,6 +78,8 @@ const Booking: React.FC = () => {
       setSelectedDate(null);
       setSelectedService(null);
       setShowInfo(true);
+      dispatch(getListAppointmentAsync({ page: 1, pageSize: 10 }));
+
       // Thêm dữ liệu lịch sử khám mới vào state
     } else {
       notification.error({ message: 'Lỗi xảy ra khi đặt lịch khám.' });
@@ -100,11 +114,7 @@ const Booking: React.FC = () => {
       title: 'Trạng thái',
       dataIndex: 'status',
       key: 'status',
-      render: (status: string) => (
-        <Tag color={status === 'completed' ? 'green' : 'geekblue'}>
-          {status}
-        </Tag>
-      ),
+      render: (status: string) => <Tag color={'geekblue'}>{status}</Tag>,
     },
     {
       title: 'Hành động',
@@ -112,18 +122,16 @@ const Booking: React.FC = () => {
       key: 'action',
       render: (_: any, record: any) => (
         <div>
-          {
-            (record.status = Status.pending && (
-              <Popconfirm
-                title="Bạn có chắc chắn muốn huỷ cuộc hẹn?"
-                onConfirm={() => handleDelete(record.id)}
-                okText="Có"
-                cancelText="Không"
-              >
-                <Button type="link" icon={<DeleteOutlined />} />
-              </Popconfirm>
-            ))
-          }
+          {record.status && record.status === Status.pending && (
+            <Popconfirm
+              title="Bạn có chắc chắn muốn huỷ cuộc hẹn?"
+              onConfirm={() => handleDelete(record.id)}
+              okText="Có"
+              cancelText="Không"
+            >
+              <Button type="link" icon={<DeleteOutlined />} />
+            </Popconfirm>
+          )}
         </div>
       ),
     },
@@ -133,17 +141,6 @@ const Booking: React.FC = () => {
     <div>
       <Card title="Đặt lịch khám">
         <Select
-          style={{ width: 200 }}
-          placeholder="Chọn bác sĩ"
-          onChange={handleDoctorChange}
-        >
-          {listDoctor.map((doctor) => (
-            <Option key={doctor.id} value={doctor.id}>
-              {doctor.fullname}
-            </Option>
-          ))}
-        </Select>
-        <Select
           style={{ width: 200, marginLeft: 16 }}
           placeholder="Chọn dịch vụ"
           onChange={handleServiceChange}
@@ -151,6 +148,17 @@ const Booking: React.FC = () => {
           {listService.map((service) => (
             <Option key={service.id} value={service.id}>
               {service.name}
+            </Option>
+          ))}
+        </Select>
+        <Select
+          style={{ width: 200 }}
+          placeholder="Chọn bác sĩ"
+          onChange={handleDoctorChange}
+        >
+          {listDoctorService.map((doctor) => (
+            <Option key={doctor.id} value={doctor.id}>
+              {doctor.fullname}
             </Option>
           ))}
         </Select>
@@ -163,7 +171,7 @@ const Booking: React.FC = () => {
           Lưu
         </Button>
       </Card>
-      {showInfo && (
+      {/* {showInfo && (
         <Card style={{ marginTop: 16 }}>
           <Descriptions title="Thông tin đặt lịch">
             <Descriptions.Item label="Bác sĩ">
@@ -183,7 +191,7 @@ const Booking: React.FC = () => {
             </Descriptions.Item>
           </Descriptions>
         </Card>
-      )}
+      )} */}
 
       {/* Hiển thị bảng lịch sử khám bệnh nhân */}
       <Card title="Lịch sử đăng ký khám" style={{ marginTop: 16 }}>
