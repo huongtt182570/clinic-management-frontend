@@ -8,3 +8,12 @@ export enum Gender {
   female = 'FEMALE',
   other = 'OTHER',
 }
+
+export enum Status {
+  pending = 'PENDING',
+  confirmed = 'CONFIRMED',
+  inprogress = 'IN_PROGESS',
+  completed = 'COMPLETED',
+  cancelByDoctor = 'CANCELED_BY_DOCTOR',
+  cancelByPatient = 'CANCELED_BY_PATIENT',
+}

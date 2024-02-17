@@ -1,4 +1,4 @@
-import { Drawer, Layout, Tabs, notification } from 'antd';
+import { Layout, Tabs, notification } from 'antd';
 import React, { useState } from 'react';
 // import banner from "../../image/banner.png";
 import { Link, useNavigate } from 'react-router-dom';
@@ -67,7 +67,7 @@ const LoginForm: React.FC = () => {
     }
   };
 
-  const formPatientRegister = () => { };
+  const formPatientRegister = () => {};
   const showDrawer = () => {
     setOpen(true);
   };
@@ -133,13 +133,7 @@ const LoginForm: React.FC = () => {
     return (
       <div>
         <form onSubmit={handleSubmit} method="post">
-          <h3>
-            {currentTab === 'doctor'
-              ? 'Số điện thoại bác sĩ'
-              : currentTab === 'admin'
-                ? 'Mã quản trị viên'
-                : 'Số điện thoại bệnh nhân'}
-          </h3>
+          <h3>Tên đăng nhập</h3>
 
           <input
             type="text"
@@ -169,8 +163,7 @@ const LoginForm: React.FC = () => {
       return (
         <div>
           <p style={{ marginTop: '10px' }}>
-            Bạn chưa có tài khoản?{' '}
-            <Link to="/patient/register">Đăng ký</Link>
+            Bạn chưa có tài khoản? <Link to="/patient/register">Đăng ký</Link>
           </p>
         </div>
       );

@@ -89,8 +89,19 @@ export const bookeAppointment = (body: IBookAppointment) => {
   return fetchHandler.post(`${API_URL}/patient/appointment`, body);
 };
 
+export const getMedicalHistory = (body: IGetList) => {
+  return fetchHandler.get(
+    `${API_URL}/patient/medical-histories?page=${body.page}&pageSize=${body.pageSize}`
+  );
+};
+
+export const cancelAppointmentPatient = (id: number) => {
+  return fetchHandler.get(`${API_URL}/patient/appointment/${id}`);
+};
+
 export default {
   updateDoctor,
+  getMedicalHistory,
   login,
   register,
   getUserInfo,
@@ -108,4 +119,5 @@ export default {
   bookeAppointment,
   deleteDoctor,
   getListDoctorPatient,
+  cancelAppointmentPatient,
 };

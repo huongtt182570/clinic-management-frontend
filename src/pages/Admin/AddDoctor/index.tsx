@@ -8,7 +8,6 @@ import {
   Popconfirm,
   Table,
   notification,
-  Dropdown,
 } from 'antd';
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
@@ -237,8 +236,8 @@ const AddDoctor: React.FC = () => {
           >
             <DatePicker disabled={isEdit} />
           </Form.Item>
-          <Form.Item
-            label="gender"
+          {/* <Form.Item
+            label="Giới tính"
             name="gender"
             rules={[
               {
@@ -248,14 +247,13 @@ const AddDoctor: React.FC = () => {
             ]}
           >
             <Dropdown menu={{ items }} />
-
-            <Form.Item
-              label="Email"
-              name="email"
-              rules={[{ required: true, message: 'Bạn chưa điền email!' }]}
-            >
-              <Input />
-            </Form.Item>
+          </Form.Item> */}
+          <Form.Item
+            label="Email"
+            name="email"
+            rules={[{ required: true, message: 'Bạn chưa điền email!' }]}
+          >
+            <Input />
           </Form.Item>
           <Form.Item
             label="Chuyên môn"

@@ -1,19 +1,39 @@
-import { Table, Tag } from 'antd';
+import { Table } from 'antd';
 import React, { useEffect } from 'react';
-import { getListAppointmentAsync } from '../../../redux/slices/patientSlice';
+import { getListMedicalHistoryAsync } from '../../../redux/slices/patientSlice';
 import { useAppDispatch, useAppSelector } from '../../hook';
 
 const AppointmentHistory: React.FC = () => {
-  const { listAppointment } = useAppSelector((state) => state.patient);
+  const { listMedicalHistory } = useAppSelector((state) => state.patient);
   const dispatch = useAppDispatch();
   useEffect(() => {
-    dispatch(getListAppointmentAsync({ page: 1, pageSize: 10 }));
+    dispatch(getListMedicalHistoryAsync({ page: 1, pageSize: 10 }));
   }, []);
   const columns = [
     {
-      title: 'Thời gian',
-      dataIndex: 'time',
-      key: 'time',
+      title: 'Ngày khám',
+      dataIndex: 'admissionDate',
+      key: 'admissionDate',
+    },
+    {
+      title: 'Triệu chứng',
+      dataIndex: 'symptons',
+      key: 'symptons',
+    },
+    {
+      title: 'Chẩn đoán',
+      dataIndex: 'diagnosis',
+      key: 'diagnosis',
+    },
+    {
+      title: 'Phương pháp điều trị',
+      dataIndex: 'treatment',
+      key: 'treatment',
+    },
+    {
+      title: 'Đơn thuốc',
+      dataIndex: 'prescription',
+      key: 'prescription',
     },
     {
       title: 'Bác sĩ',
@@ -21,26 +41,16 @@ const AppointmentHistory: React.FC = () => {
       key: 'doctor',
     },
     {
-      title: 'Dịch vụ',
-      dataIndex: 'service',
-      key: 'service',
-    },
-    {
-      title: 'Trạng thái',
-      dataIndex: 'status',
-      key: 'status',
-      render: (status: string) => (
-        <Tag color={status === 'completed' ? 'green' : 'geekblue'}>
-          {status}
-        </Tag>
-      ),
+      title: 'Khoa',
+      dataIndex: 'speciality',
+      key: 'speciality',
     },
   ];
 
   return (
     <>
       <h2>Lịch sử khám của bệnh nhân</h2>
-      <Table dataSource={listAppointment} columns={columns} />
+      <Table dataSource={listMedicalHistory} columns={columns} />
     </>
   );
 };
