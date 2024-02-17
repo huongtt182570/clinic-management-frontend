@@ -86,7 +86,7 @@ const PatientRegisterForm: React.FC = () => {
         <form onSubmit={handleSubmit} method="post">
           <h3>Số điện thoại</h3>
           <Input
-            type="text"
+            type="number"
             name="username"
             value={formValue.phone}
             onChange={(e) =>

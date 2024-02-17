@@ -89,12 +89,12 @@ const AddDoctor: React.FC = () => {
     { title: 'Bằng cấp', dataIndex: 'degree', key: 'degree' },
     { title: 'Kinh nghiệm (năm)', dataIndex: 'experience', key: 'experience' },
     { title: 'Số điện thoại', dataIndex: 'phone', key: 'phone' },
-    {
-      title: 'Lịch trình',
-      dataIndex: 'appointmentDate',
-      key: 'appointmentDate',
-      render: () => <a onClick={() => setModalVisible(true)}>Chi tiết</a>,
-    },
+    // {
+    //   title: 'Lịch trình',
+    //   dataIndex: 'appointmentDate',
+    //   key: 'appointmentDate',
+    //   render: () => <a onClick={() => setModalVisible(true)}>Chi tiết</a>,
+    // },
     {
       title: 'Hành động',
       dataIndex: 'action',

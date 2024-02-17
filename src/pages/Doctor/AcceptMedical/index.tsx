@@ -14,19 +14,15 @@ interface AcceptMedicalProps {
   // Các props khác mà bạn cần truyền vào
 }
 
+
+
 const AcceptMedical: React.FC<AcceptMedicalProps> = () => {
-  const [acceptedAppointments, setAcceptedAppointments] = useState<
-    Appointment[]
-  >([]);
-  const [pendingAppointments, setPendingAppointments] = useState<Appointment[]>(
-    []
-  );
+  const [acceptedAppointments, setAcceptedAppointments] = useState<Appointment[]>([]);
+  const [pendingAppointments, setPendingAppointments] = useState<Appointment[]>([]);
   const [rejectReason, setRejectReason] = useState<string>('');
   const [visible, setVisible] = useState<boolean>(false);
 
-  const { listApproveAppointments, listPendingAppointments } = useAppSelector(
-    (state) => state.doctor
-  );
+
   useEffect(() => {
     // Tạo dữ liệu mẫu khi component được render
     const initialPendingAppointments: Appointment[] = [
@@ -37,6 +33,13 @@ const AcceptMedical: React.FC<AcceptMedicalProps> = () => {
         medicalHistory: 'Medical history 1',
         timeSlot: '10:00 AM - 11:00 AM',
       },
+      {
+        id: 2,
+        patientName: 'Patient 2',
+        age: 35,
+        medicalHistory: 'Medical history 2',
+        timeSlot: '11:00 AM - 12:00 PM',
+      },
       // Thêm các dữ liệu mẫu khác nếu cần
     ];
 
@@ -46,9 +49,7 @@ const AcceptMedical: React.FC<AcceptMedicalProps> = () => {
   const handleAccept = (record: Appointment) => {
     // Xác nhận lịch và cập nhật danh sách
     setAcceptedAppointments([...acceptedAppointments, record]);
-    setPendingAppointments(
-      pendingAppointments.filter((item) => item.id !== record.id)
-    );
+    setPendingAppointments(pendingAppointments.filter((item) => item.id !== record.id));
   };
 
   const showRejectModal = (record: Appointment) => {
@@ -72,9 +73,7 @@ const AcceptMedical: React.FC<AcceptMedicalProps> = () => {
       <Form.Item
         label="Nguyên nhân từ chối"
         name="rejectReason"
-        rules={[
-          { required: true, message: 'Vui lòng nhập nguyên nhân từ chối!' },
-        ]}
+        rules={[{ required: true, message: 'Vui lòng nhập nguyên nhân từ chối!' }]}
       >
         <Input.TextArea onChange={(e) => setRejectReason(e.target.value)} />
       </Form.Item>
@@ -85,26 +84,10 @@ const AcceptMedical: React.FC<AcceptMedicalProps> = () => {
   );
 
   const pendingColumns = [
-    {
-      title: 'Tên bệnh nhân',
-      dataIndex: 'patientName',
-      key: 'patientName',
-    },
-    {
-      title: 'Tuổi',
-      dataIndex: 'age',
-      key: 'age',
-    },
-    {
-      title: 'Lịch sử bệnh',
-      dataIndex: 'medicalHistory',
-      key: 'medicalHistory',
-    },
-    {
-      title: 'Thời gian khám',
-      dataIndex: 'timeSlot',
-      key: 'timeSlot',
-    },
+    { title: 'Tên bệnh nhân', dataIndex: 'patientName', key: 'patientName' },
+    { title: 'Tuổi', dataIndex: 'age', key: 'age' },
+    { title: 'Lịch sử bệnh', dataIndex: 'medicalHistory', key: 'medicalHistory' },
+    { title: 'Thời gian khám', dataIndex: 'timeSlot', key: 'timeSlot' },
     {
       title: 'Thao tác',
       dataIndex: 'actions',
@@ -114,9 +97,9 @@ const AcceptMedical: React.FC<AcceptMedicalProps> = () => {
           <Button type="primary" onClick={() => handleAccept(record)}>
             Xác nhận
           </Button>
-          <Button type="primary" onClick={() => showRejectModal(record)}>
+          {/* <Button type="primary" onClick={() => showRejectModal(record)}>
             Từ chối
-          </Button>
+          </Button> */}
         </Space>
       ),
     },
@@ -128,11 +111,7 @@ const AcceptMedical: React.FC<AcceptMedicalProps> = () => {
         {/* Danh sách lịch đặt cần được chấp nhận */}
         <Card title="Yêu cầu" style={{ background: '#f9f9f9' }}>
           <div style={{ overflowX: 'auto' }}>
-            <Table
-              dataSource={listPendingAppointments}
-              columns={pendingColumns}
-              style={{ width: '100%' }}
-            />
+            <Table dataSource={pendingAppointments} columns={pendingColumns} style={{ width: '100%' }} />
           </div>
         </Card>
       </Col>

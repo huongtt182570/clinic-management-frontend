@@ -67,26 +67,26 @@ const AddPatient: React.FC = () => {
   const columns = [
     { title: 'Họ và tên', dataIndex: 'fullname', key: 'fullname' },
     { title: 'Ngày sinh', dataIndex: 'birthday', key: 'birthday' },
-    { title: 'Giới tính', dataIndex: 'gender', key: 'gender' },
+    // { title: 'Giới tính', dataIndex: 'gender', key: 'gender' },
     { title: 'Số điện thoại', dataIndex: 'phone', key: 'phone' },
     { title: 'Email', dataIndex: 'email', key: 'email' },
-    {
-      title: 'Lịch sử khám',
-      dataIndex: 'medicalHistory',
-      key: 'medicalHistory',
-      render: (_: any, record: Patient) => (
-        <a onClick={() => showDetailModal(record)}>Chi tiết</a>
-      ),
-    },
+    // {
+    //   title: 'Lịch sử khám',
+    //   dataIndex: 'medicalHistory',
+    //   key: 'medicalHistory',
+    //   render: (_: any, record: Patient) => (
+    //     <a onClick={() => showDetailModal(record)}>Chi tiết</a>
+    //   ),
+    // },
 
-    {
-      title: 'Trạng thái cuộc hẹn',
-      dataIndex: 'appointmentDate',
-      key: 'appointmentDate',
-      render: (_: any, record: Patient) => (
-        <a onClick={() => showDetailModal(record)}>Chi tiết</a>
-      ),
-    },
+    // {
+    //   title: 'Trạng thái cuộc hẹn',
+    //   dataIndex: 'appointmentDate',
+    //   key: 'appointmentDate',
+    //   render: (_: any, record: Patient) => (
+    //     <a onClick={() => showDetailModal(record)}>Chi tiết</a>
+    //   ),
+    // },
   ];
 
   const showModal = () => {

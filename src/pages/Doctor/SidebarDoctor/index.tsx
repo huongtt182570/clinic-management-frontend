@@ -19,7 +19,7 @@ const SidebarDoctor: React.FC<SidebarProps> = ({ activeTab, onTabChange }) => {
         onClick={({ key }) => onTabChange(key.toString())}
       >
         <Menu.Item key="information">Thông tin cá nhân</Menu.Item>
-        <Menu.Item key="accept_medical">Bệnh nhân</Menu.Item>
+        <Menu.Item key="accept_medical">Yêu cầu</Menu.Item>
         <Menu.Item key="doctor_appointment">Lịch trình</Menu.Item>
         <Menu.Item key="change_password">Đổi mật khẩu</Menu.Item>
       </Menu>

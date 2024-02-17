@@ -134,9 +134,9 @@ const LoginForm: React.FC = () => {
       <div>
         <form onSubmit={handleSubmit} method="post">
           <h3>
-            {currentTab === 'Bác sĩ'
+            {currentTab === 'doctor'
               ? 'Số điện thoại bác sĩ'
-              : currentTab === 'Quản trị viên'
+              : currentTab === 'admin'
                 ? 'Mã quản trị viên'
                 : 'Số điện thoại bệnh nhân'}
           </h3>

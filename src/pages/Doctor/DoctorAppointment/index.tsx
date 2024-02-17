@@ -39,12 +39,12 @@ const DoctorAppointment: React.FC = () => {
             dataIndex: 'email',
             key: 'email',
         },
-        {
-            title: 'Lịch sử khám',
-            dataIndex: 'medicalHistory',
-            key: 'medicalHistory',
-            render: () => <a onClick={() => setModalVisible(true)}>Chi tiết</a>,
-        },
+        // {
+        //     title: 'Lịch sử khám',
+        //     dataIndex: 'medicalHistory',
+        //     key: 'medicalHistory',
+        //     render: () => <a onClick={() => setModalVisible(true)}>Chi tiết</a>,
+        // },
         {
             title: 'Tình trạng cuộc hẹn',
             dataIndex: 'appointment',

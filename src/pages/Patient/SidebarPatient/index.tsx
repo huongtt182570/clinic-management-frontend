@@ -22,7 +22,7 @@ const SidebarPatient: React.FC<SidebarProps> = ({ activeTab, onTabChange }) => {
         <Menu.Item key="choose_doctor">Bác sĩ</Menu.Item>
         <Menu.Item key="choose_medical">Dịch vụ</Menu.Item>
         <Menu.Item key="booking">Đặt lịch khám</Menu.Item>
-        <Menu.Item key="appointment_history">Lịch sử khám</Menu.Item>
+        {/* <Menu.Item key="appointment_history">Lịch sử khám</Menu.Item> */}
         <Menu.Item key="change_password">Đổi mật khẩu</Menu.Item>
       </Menu>
     </Sider>
