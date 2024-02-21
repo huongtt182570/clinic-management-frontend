@@ -21,7 +21,8 @@ const Sidebar: React.FC<SidebarProps> = ({ activeTab, onTabChange }) => {
         <Menu.Item key="dashboard">Bảng điều khiển</Menu.Item>
         <Menu.Item key="addDoctor">Quản lý bác sĩ</Menu.Item>
         <Menu.Item key="addPatient">Bệnh nhân</Menu.Item>
-        <Menu.Item key="appointmentDetails">Quản lý dịch vụ</Menu.Item>
+        <Menu.Item key="medical">Quản lý dịch vụ</Menu.Item>
+        <Menu.Item key="appointmentDetails">Chi tiết cuộc hẹn</Menu.Item>
       </Menu>
     </Sider>
   );

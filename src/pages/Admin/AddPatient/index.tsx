@@ -1,7 +1,8 @@
 // AddPatient.tsx
-import { DatePicker, Form, Input, Modal, Table, TimePicker } from 'antd';
+import { Modal, Table } from 'antd';
 import React, { useEffect, useState } from 'react';
 import {
+  getAllHistoryAsync,
   getListPatientAdmin,
   resetListPatientAdmin,
 } from '../../../redux/slices/adminSlice';
@@ -18,30 +19,8 @@ interface Patient {
 }
 
 const AddPatient: React.FC = () => {
-  const [patients, setPatients] = useState<Patient[]>([
-    {
-      key: 1,
-      name: 'John Doe',
-      age: 30,
-      phone: '1234567890',
-      medicalHistory: 'Cough and fever',
-      appointmentDate: '2022-01-20',
-      appointmentTime: '10:00',
-    },
-    {
-      key: 2,
-      name: 'Jane Doe',
-      age: 25,
-      phone: '9876543210',
-      medicalHistory: 'Headache',
-      appointmentDate: '2022-01-21',
-      appointmentTime: '14:30',
-    },
-    // Add more patient data as needed
-  ]);
-
   const [detailVisible, setDetailVisible] = useState(false);
-  const [selectedPatient, setSelectedPatient] = useState<Patient | null>(null);
+  const [selectedPatient, setSelectedPatient] = useState<any>(null);
 
   const showDetailModal = (patient: Patient) => {
     setSelectedPatient(patient);
@@ -52,13 +31,14 @@ const AddPatient: React.FC = () => {
     setSelectedPatient(null);
     setDetailVisible(false);
   };
-  const [isModalVisible, setIsModalVisible] = useState(false);
-  const [form] = Form.useForm();
   const dispatch = useAppDispatch();
-  const { listPatient = [] } = useAppSelector((state) => state.admin);
+  const { listPatient = [], listHistory } = useAppSelector(
+    (state) => state.admin
+  );
 
   useEffect(() => {
     dispatch(getListPatientAdmin({ page: 1, pageSize: 10 }));
+    dispatch(getAllHistoryAsync({ page: 1, pageSize: 100 }));
     return () => {
       dispatch(resetListPatientAdmin());
     };
@@ -77,94 +57,42 @@ const AddPatient: React.FC = () => {
         <a onClick={() => showDetailModal(record)}>Chi tiết</a>
       ),
     },
-
-    // {
-    //   title: 'Trạng thái cuộc hẹn',
-    //   dataIndex: 'appointmentDate',
-    //   key: 'appointmentDate',
-    //   render: (_: any, record: Patient) => (
-    //     <a onClick={() => showDetailModal(record)}>Chi tiết</a>
-    //   ),
-    // },
   ];
-
-  const showModal = () => {
-    setIsModalVisible(true);
-  };
-
-  const handleOk = () => {
-    form.validateFields().then((values) => {
-      const newPatient: Patient = {
-        key: patients.length + 1,
-        ...values,
-      };
-      const updatedPatients = [...patients, newPatient].sort((a, b) =>
-        a.name.localeCompare(b.name)
-      );
-      setPatients(updatedPatients);
-      form.resetFields();
-      setIsModalVisible(false);
-    });
-  };
-
-  const handleCancel = () => {
-    form.resetFields();
-    setIsModalVisible(false);
-  };
-
+  const detailColumn = [
+    {
+      title: 'Ngày khám',
+      dataIndex: 'admissionDate',
+      key: 'admissionDate',
+    },
+    {
+      title: 'Bác sĩ',
+      dataIndex: 'doctor',
+      key: 'doctor',
+    },
+    {
+      title: 'Triệu chứng',
+      dataIndex: 'symptons',
+      key: 'symptons',
+    },
+    {
+      title: 'Chẩn đoán',
+      dataIndex: 'diagnosis',
+      key: 'diagnosis',
+    },
+    {
+      title: 'Phương pháp điều trị',
+      dataIndex: 'treatment',
+      key: 'treatment',
+    },
+    {
+      title: 'Đơn thuốc',
+      dataIndex: 'prescription',
+      key: 'prescription',
+    },
+  ];
   return (
     <div>
       <Table dataSource={listPatient} columns={columns} pagination={false} />
-
-      <Modal
-        title="Add Patient"
-        visible={isModalVisible}
-        onOk={handleOk}
-        onCancel={handleCancel}
-      >
-        <Form form={form} labelCol={{ span: 8 }} wrapperCol={{ span: 16 }}>
-          <Form.Item
-            label="Name"
-            name="name"
-            rules={[
-              { required: true, message: 'Please input the patient name!' },
-            ]}
-          >
-            <Input />
-          </Form.Item>
-          <Form.Item
-            label="Age"
-            name="age"
-            rules={[
-              { required: true, message: 'Please input the patient age!' },
-            ]}
-          >
-            <Input type="number" />
-          </Form.Item>
-          <Form.Item
-            label="Phone"
-            name="phone"
-            rules={[
-              {
-                required: true,
-                message: 'Please input the patient phone number!',
-              },
-            ]}
-          >
-            <Input />
-          </Form.Item>
-          <Form.Item label="Medical History" name="medicalHistory">
-            <Input.TextArea />
-          </Form.Item>
-          <Form.Item label="Appointment Date" name="appointmentDate">
-            <DatePicker />
-          </Form.Item>
-          <Form.Item label="Appointment Time" name="appointmentTime">
-            <TimePicker format="HH:mm" />
-          </Form.Item>
-        </Form>
-      </Modal>
-
       <Modal
         title="Chi tiết lịch sử khám"
         visible={detailVisible}
@@ -173,10 +101,13 @@ const AddPatient: React.FC = () => {
       >
         {selectedPatient && (
           <div>
-            <p><strong>Dịch vụ khám:</strong> {selectedPatient.name}</p>
-            <p><strong>Bác sĩ khám:</strong> </p>
-            <p><strong>Thời gian khám:</strong> {selectedPatient.appointmentTime}</p>
-            <p><strong>Trạng thái:</strong> </p>
+            <Table
+              dataSource={listHistory?.filter(
+                (item) => item.patientId === selectedPatient.id
+              )}
+              columns={detailColumn}
+              pagination={false}
+            />
           </div>
         )}
       </Modal>

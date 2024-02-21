@@ -4,10 +4,11 @@ import React, { useState } from 'react';
 import Headers from '../../../components/Headers';
 import AddDoctor from '../AddDoctor';
 import AddPatient from '../AddPatient';
+import Appointment from '../Appointment/appointment';
+import Dashboard_Admin from '../Dashboard_Admin';
 import Medical from '../Medical';
 import Sidebar from '../SidebarAdmin';
 import './style.scss'; // Create your own CSS file
-import Dashboard_Admin from '../Dashboard_Admin';
 
 const { Content } = Layout;
 
@@ -36,7 +37,8 @@ const AdminDashboard: React.FC = () => {
             {activeTab === 'dashboard' && <Dashboard_Admin />}
             {activeTab === 'addDoctor' && <AddDoctor />}
             {activeTab === 'addPatient' && <AddPatient />}
-            {activeTab === 'appointmentDetails' && <Medical />}
+            {activeTab === 'medical' && <Medical />}
+            {activeTab === 'appointmentDetails' && <Appointment />}
           </Content>
         </Layout>
       </Layout>

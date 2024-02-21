@@ -4,14 +4,14 @@ import {
   Card,
   DatePicker,
   Input,
-  Popconfirm,
+  Modal,
   Select,
   Table,
-  Tag,
   notification,
 } from 'antd';
 import moment from 'moment';
 import React, { useEffect, useState } from 'react';
+import StatusTag from '../../../components/common/StatusTag';
 import {
   bookeAppointmentAsync,
   cancelAppointmentAsync,
@@ -36,8 +36,9 @@ const Booking: React.FC = () => {
   const [selectedService, setSelectedService] = useState<number | null>(null);
   const [selectedDate, setSelectedDate] = useState<any>(null);
   const [reason, setReason] = useState<string>(null);
-  const [showInfo, setShowInfo] = useState<boolean>(false);
-  const { listService, listDoctor, listAppointment } = useAppSelector(
+  const [id, setId] = useState<number>(null);
+  const [openConfirm, setOpenConfirm] = useState<boolean>(false);
+  const { listService, listAppointment } = useAppSelector(
     (state) => state.patient
   );
 
@@ -79,7 +80,6 @@ const Booking: React.FC = () => {
       setSelectedDoctor(null);
       setSelectedDate(null);
       setSelectedService(null);
-      setShowInfo(true);
       dispatch(getListAppointmentAsync({ page: 1, pageSize: 10 }));
 
       // Thêm dữ liệu lịch sử khám mới vào state
@@ -87,12 +87,16 @@ const Booking: React.FC = () => {
       notification.error({ message: 'Lỗi xảy ra khi đặt lịch khám.' });
     }
   };
-  const handleDelete = async (key: number) => {
+  const handleDelete = async () => {
     if (reason) {
-      const res = await dispatch(cancelAppointmentAsync({ id: key, reason }));
+      const res = await dispatch(
+        cancelAppointmentAsync({ id: id || 0, reason })
+      );
       if (res?.payload?.success) {
         notification.success({ message: 'Huỷ cuộc hẹn thành công.' });
         dispatch(getListAppointmentAsync({ page: 1, pageSize: 10 }));
+        setReason('');
+        setOpenConfirm(false);
       } else {
         notification.error({ message: 'Lỗi xảy ra khi huỷ cuộc hẹn.' });
       }
@@ -118,7 +122,7 @@ const Booking: React.FC = () => {
       title: 'Trạng thái',
       dataIndex: 'status',
       key: 'status',
-      render: (status: string) => <Tag color={'geekblue'}>{status}</Tag>,
+      render: (status: string) => <StatusTag status={status} />,
     },
     {
       title: 'Hành động',
@@ -127,23 +131,14 @@ const Booking: React.FC = () => {
       render: (_: any, record: any) => (
         <div>
           {record.status && record.status === Status.pending && (
-            <Popconfirm
-              title="Bạn có chắc chắn muốn huỷ cuộc hẹn?"
-              onConfirm={() => handleDelete(record.id)}
-              okText="Có"
-              children={
-                <Input
-                  value={reason}
-                  onChange={(e) => {
-                    setReason(e.target.value);
-                  }}
-                  required
-                />
-              }
-              cancelText="Không"
-            >
-              <Button type="link" icon={<DeleteOutlined />} />
-            </Popconfirm>
+            <Button
+              type="link"
+              icon={<DeleteOutlined />}
+              onClick={() => {
+                setOpenConfirm(true);
+                setId(record.id);
+              }}
+            />
           )}
         </div>
       ),
@@ -184,32 +179,32 @@ const Booking: React.FC = () => {
           Lưu
         </Button>
       </Card>
-      {/* {showInfo && (
-        <Card style={{ marginTop: 16 }}>
-          <Descriptions title="Thông tin đặt lịch">
-            <Descriptions.Item label="Bác sĩ">
-              {
-                listDoctor.find((doctor) => doctor.id === selectedDoctor)
-                  ?.fullname
-              }
-            </Descriptions.Item>
-            <Descriptions.Item label="Dịch vụ">
-              {
-                listService.find((service) => service.id === selectedService)
-                  ?.name
-              }
-            </Descriptions.Item>
-            <Descriptions.Item label="Ngày">
-              {selectedDate?.format('YYYY-MM-DD')}
-            </Descriptions.Item>
-          </Descriptions>
-        </Card>
-      )} */}
 
       {/* Hiển thị bảng lịch sử khám bệnh nhân */}
       <Card title="Lịch sử đăng ký khám" style={{ marginTop: 16 }}>
         <Table dataSource={listAppointment} columns={columns} />
       </Card>
+      {openConfirm && (
+        <Modal
+          open={openConfirm}
+          width={400}
+          onOk={handleDelete}
+          onCancel={() => {
+            setOpenConfirm(false);
+            setReason('');
+          }}
+        >
+          <h3>Bạn có chắc chắn muốn huỷ cuộc hẹn?</h3>
+          <div>Điền lí do</div>
+          <Input
+            value={reason}
+            onChange={(e) => {
+              setReason(e.target.value);
+            }}
+            required
+          />
+        </Modal>
+      )}
     </div>
   );
 };

@@ -73,6 +73,17 @@ export const addRelationship = (body: IAddRelationship) => {
   return fetchHandler.post(`${API_URL}/medical-service/doctor-service`, body);
 };
 
+export const getAllAppointment = (body: IGetList) => {
+  return fetchHandler.get(
+    `${API_URL}/appointment/all?page=${body.page}&pageSize=${body.pageSize}`
+  );
+};
+export const getAllHistory = (body: IGetList) => {
+  return fetchHandler.get(
+    `${API_URL}/medical-history/all?page=${body.page}&pageSize=${body.pageSize}`
+  );
+};
+
 //api doctor
 export const getListPendingAppointment = () => {
   return fetchHandler.get(`${API_URL}/doctor/appointments`);
@@ -102,10 +113,9 @@ export const getMedicalHistory = (body: IGetList) => {
 };
 
 export const cancelAppointmentPatient = (body: IReasonCancel) => {
-  return fetchHandler.put(
-    `${API_URL}/patient/appointment/cancel/${body.id}`,
-    body.reason
-  );
+  return fetchHandler.put(`${API_URL}/patient/appointment/cancel/${body.id}`, {
+    reason: body.reason,
+  });
 };
 
 export default {
@@ -130,4 +140,6 @@ export default {
   getListDoctorPatient,
   cancelAppointmentPatient,
   addRelationship,
+  getAllAppointment,
+  getAllHistory,
 };
