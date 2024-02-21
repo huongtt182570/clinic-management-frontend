@@ -1,6 +1,10 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { formatDate } from '../../components/common/function';
-import { IBookAppointment, IGetList } from '../../pages/model/model';
+import {
+  IBookAppointment,
+  IGetList,
+  IReasonCancel,
+} from '../../pages/model/model';
 import { Patient } from '../../pages/model/patientModel';
 import api from '../services/api';
 
@@ -50,8 +54,8 @@ export const getListMedicalHistoryAsync = createAsyncThunk(
 );
 export const cancelAppointmentAsync = createAsyncThunk(
   'Patient/cancelAppointment',
-  async (id: number) => {
-    const response = await api.cancelAppointmentPatient(id);
+  async (body: IReasonCancel) => {
+    const response = await api.cancelAppointmentPatient(body);
     return response.data;
   }
 );

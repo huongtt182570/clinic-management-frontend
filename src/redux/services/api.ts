@@ -5,6 +5,7 @@ import {
   IChangePassword,
   IGetList,
   ILogin,
+  IReasonCancel,
   IService,
   IUpdateDoctor,
 } from '../../pages/model/model';
@@ -100,8 +101,11 @@ export const getMedicalHistory = (body: IGetList) => {
   );
 };
 
-export const cancelAppointmentPatient = (id: number) => {
-  return fetchHandler.get(`${API_URL}/patient/appointment/${id}`);
+export const cancelAppointmentPatient = (body: IReasonCancel) => {
+  return fetchHandler.put(
+    `${API_URL}/patient/appointment/cancel/${body.id}`,
+    body.reason
+  );
 };
 
 export default {

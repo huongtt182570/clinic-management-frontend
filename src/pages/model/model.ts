@@ -53,3 +53,8 @@ export interface IAddRelationship {
   serviceId: number;
   doctorId: number;
 }
+
+export interface IReasonCancel {
+  id: number;
+  reason: string;
+}

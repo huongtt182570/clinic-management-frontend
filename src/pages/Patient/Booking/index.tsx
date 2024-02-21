@@ -3,6 +3,7 @@ import {
   Button,
   Card,
   DatePicker,
+  Input,
   Popconfirm,
   Select,
   Table,
@@ -34,6 +35,7 @@ const Booking: React.FC = () => {
   const [selectedDoctor, setSelectedDoctor] = useState<number | null>(null);
   const [selectedService, setSelectedService] = useState<number | null>(null);
   const [selectedDate, setSelectedDate] = useState<any>(null);
+  const [reason, setReason] = useState<string>(null);
   const [showInfo, setShowInfo] = useState<boolean>(false);
   const { listService, listDoctor, listAppointment } = useAppSelector(
     (state) => state.patient
@@ -86,12 +88,14 @@ const Booking: React.FC = () => {
     }
   };
   const handleDelete = async (key: number) => {
-    const res = await dispatch(cancelAppointmentAsync(key));
-    if (res?.payload?.success) {
-      notification.success({ message: 'Huỷ cuộc hẹn thành công.' });
-      dispatch(getListAppointmentAsync({ page: 1, pageSize: 10 }));
-    } else {
-      notification.error({ message: 'Lỗi xảy ra khi huỷ cuộc hẹn.' });
+    if (reason) {
+      const res = await dispatch(cancelAppointmentAsync({ id: key, reason }));
+      if (res?.payload?.success) {
+        notification.success({ message: 'Huỷ cuộc hẹn thành công.' });
+        dispatch(getListAppointmentAsync({ page: 1, pageSize: 10 }));
+      } else {
+        notification.error({ message: 'Lỗi xảy ra khi huỷ cuộc hẹn.' });
+      }
     }
   };
   const columns = [
@@ -127,6 +131,15 @@ const Booking: React.FC = () => {
               title="Bạn có chắc chắn muốn huỷ cuộc hẹn?"
               onConfirm={() => handleDelete(record.id)}
               okText="Có"
+              children={
+                <Input
+                  value={reason}
+                  onChange={(e) => {
+                    setReason(e.target.value);
+                  }}
+                  required
+                />
+              }
               cancelText="Không"
             >
               <Button type="link" icon={<DeleteOutlined />} />

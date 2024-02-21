@@ -168,7 +168,7 @@ const AddDoctor: React.FC = () => {
       <Table dataSource={listDoctor || []} columns={columns} />
 
       <Modal
-        title="Add Doctor"
+        title={isEdit ? 'Sửa bác sĩ' : 'Thêm bác sĩ'}
         visible={isModalVisible}
         onOk={handleOk}
         onCancel={handleCancel}
@@ -202,7 +202,7 @@ const AddDoctor: React.FC = () => {
           <Form.Item
             label="Email"
             name="email"
-            rules={[{ message: 'Bạn chưa điền email!' }]}
+            rules={[{ required: true, message: 'Bạn chưa điền email!' }]}
           >
             <Input disabled={isEdit} />
           </Form.Item>
@@ -244,13 +244,6 @@ const AddDoctor: React.FC = () => {
               <Select.Option value="MALE">Nam</Select.Option>
               <Select.Option value="OTHER">Khác</Select.Option>
             </Select>
-          </Form.Item>
-          <Form.Item
-            label="Email"
-            name="email"
-            rules={[{ required: true, message: 'Bạn chưa điền email!' }]}
-          >
-            <Input />
           </Form.Item>
           <Form.Item
             label="Chuyên môn"
