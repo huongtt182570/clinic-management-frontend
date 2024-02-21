@@ -14,6 +14,8 @@ const initialState: Admin = {
   listDoctor: [],
   listPatient: [],
   listService: [],
+  listAppointment: [],
+  listHistory: [],
 };
 export const getListDoctorAdmin = createAsyncThunk(
   'admin/getListDoctor',
@@ -89,6 +91,21 @@ export const addRelationshipAsync = createAsyncThunk(
   }
 );
 
+export const getAllAppointmentAsync = createAsyncThunk(
+  'admin/getAllAppoint',
+  async (body: IGetList) => {
+    const response = await api.getAllAppointment(body);
+    return response.data;
+  }
+);
+export const getAllHistoryAsync = createAsyncThunk(
+  'admin/getAllHistory',
+  async (body: IGetList) => {
+    const response = await api.getAllHistory(body);
+    return response.data;
+  }
+);
+
 export const adminSlice = createSlice({
   name: 'AdminSlice',
   initialState,
@@ -115,10 +132,34 @@ export const adminSlice = createSlice({
         state.listDoctor = doctors;
       })
       .addCase(getListPatientAdmin.fulfilled, (state, action) => {
-        state.listPatient = action?.payload?.data;
+        const patients = action?.payload?.data?.map((item) => ({
+          ...item,
+          birthday: formatDate(item.birthday),
+        }));
+        state.listPatient = patients;
       })
       .addCase(getListServiceAsync.fulfilled, (state, action) => {
         state.listService = action?.payload?.data;
+      })
+      .addCase(getAllAppointmentAsync.fulfilled, (state, action) => {
+        const appointments = action?.payload?.data?.map((item) => ({
+          id: item.id,
+          patientName: item.patient.fullname,
+          doctorName: item.doctor.user.fullname,
+          patientPhone: item.patient.phone,
+          status: item.status,
+          service: item.service.name,
+          reasonCanceled: item.reasonCanceled || '',
+        }));
+        state.listAppointment = appointments || [];
+      })
+      .addCase(getAllHistoryAsync.fulfilled, (state, action) => {
+        const history = action?.payload?.data?.map((item) => ({
+          ...item,
+          doctor: item.doctor.user.fullname,
+          admissionDate: formatDate(item.admissionDate),
+        }));
+        state.listHistory = history || [];
       });
   },
 });

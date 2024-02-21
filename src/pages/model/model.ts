@@ -53,3 +53,24 @@ export interface IAddRelationship {
   serviceId: number;
   doctorId: number;
 }
+
+export interface IReasonCancel {
+  id: number;
+  reason: string;
+}
+
+export interface IChangeStatus {
+  id: number;
+  reason?: string;
+  status: string;
+}
+
+export interface IUpdateHistory {
+  patientId: number;
+  symptons: string;
+  diagnosis: string;
+  treatment: string;
+  prescription: string;
+  admissionDate: string;
+  dischargeDate: string;
+}

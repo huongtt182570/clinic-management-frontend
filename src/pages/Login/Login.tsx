@@ -25,7 +25,12 @@ const LoginForm: React.FC = () => {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
-
+  // useEffect(() => {
+  //   if (localStorage.getItem(COMMON.ACCESS_TOKEN)) {
+  //     dispatch(getUserInfoAsync());
+  //     navigate(`/${currentTab}/dashboard`, { replace: true });
+  //   }
+  // }, []);
   const handleLogin = async () => {
     setLoading(true);
     // Simulate asynchronous login logic
@@ -50,7 +55,7 @@ const LoginForm: React.FC = () => {
         fetchHandler.defaults.headers.common[
           'Authorization'
         ] = `Bearer ${res?.payload?.data?.accessToken}`;
-        navigate(`/${currentTab}/dashboard`);
+        navigate(`/${currentTab}/dashboard`, { replace: true });
         notification.success({
           message: 'Đăng nhập thành công',
           description: `Chào mừng ${currentTab} ${formValue.ID}!`,
@@ -66,41 +71,6 @@ const LoginForm: React.FC = () => {
       });
     }
   };
-
-  const formPatientRegister = () => {};
-  const showDrawer = () => {
-    setOpen(true);
-  };
-
-  const onClose = () => {
-    setOpen(false);
-  };
-
-  const [open, setOpen] = useState(false);
-
-  const [forgetPassword, setForgetPassword] = useState({
-    type: '',
-    email: '',
-  });
-
-  const handleForgetPassword = (e: any) => {
-    setForgetPassword({ ...forgetPassword, [e.target.name]: e.target.value });
-  };
-
-  const handleChangePassword = () => {
-    // Handle change password logic
-  };
-
-  const [registrationForm, setRegistrationForm] = useState({
-    username: '',
-    email: '',
-    // Add additional fields if needed
-  });
-
-  const handleRegistration = () => {
-    // Handle registration logic
-  };
-
   return (
     <Layout>
       <div className="mainLoginPage">

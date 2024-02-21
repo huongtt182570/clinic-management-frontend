@@ -25,6 +25,8 @@ const PatientRegisterForm: React.FC = () => {
     fullname: '',
     password: '',
     confirmPassword: '',
+    email: '',
+
     // Add additional fields if needed
   });
 
@@ -32,27 +34,11 @@ const PatientRegisterForm: React.FC = () => {
     // Handle registration logic
     const res = await dispatch(handleRegisterAsync(formValue));
     if (res.payload.success) {
-      notification.success({ message: 'Register successfully' });
+      notification.success({ message: 'Đăng ký tài khoản thành công.' });
       navigate('/');
     } else {
-      notification.error({ message: 'Register failed' });
+      notification.error({ message: 'Lỗi xảy ra khi đăng ký tài khoản.' });
     }
-  };
-
-  const [open, setOpen] = useState(false);
-
-  const showDrawer = () => {
-    setOpen(true);
-  };
-
-  const onClose = () => {
-    setOpen(false);
-  };
-
-  const [selectedTab, setSelectedTab] = useState<string>('2');
-
-  const handleMenuClick = (e: any) => {
-    setSelectedTab(e.key);
   };
 
   return (
@@ -84,7 +70,7 @@ const PatientRegisterForm: React.FC = () => {
     return (
       <div>
         <form onSubmit={handleSubmit} method="post">
-          <h3>Số điện thoại</h3>
+          <h3>Tên đăng nhập</h3>
           <Input
             type="number"
             name="username"
@@ -121,6 +107,16 @@ const PatientRegisterForm: React.FC = () => {
             value={formValue.fullname}
             onChange={(e) =>
               setFormValue({ ...formValue, fullname: e.target.value })
+            }
+            required
+          />
+          <h3>Email</h3>
+          <Input
+            type="email"
+            name="email"
+            value={formValue.email}
+            onChange={(e) =>
+              setFormValue({ ...formValue, email: e.target.value })
             }
             required
           />
