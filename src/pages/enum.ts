@@ -12,7 +12,7 @@ export enum Gender {
 export enum Status {
   pending = 'PENDING',
   confirmed = 'CONFIRMED',
-  inprogress = 'IN_PROGESS',
+  inprogress = 'IN_PROGRESS',
   completed = 'COMPLETED',
   cancelByDoctor = 'CANCELED_BY_DOCTOR',
   cancelByPatient = 'CANCELED_BY_PATIENT',

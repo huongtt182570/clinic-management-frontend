@@ -1,8 +1,9 @@
-import { Tag } from 'antd';
+import { DoubleRightOutlined } from '@ant-design/icons';
+import { Popconfirm, Tag } from 'antd';
 import { Status } from '../../pages/enum';
 
-function StatusTag(props: { status: string }) {
-  const { status } = props;
+function StatusTag(props: { status: string; onClick?: () => void }) {
+  const { status, onClick } = props;
   let color;
   let statusString;
   switch (status) {
@@ -16,7 +17,7 @@ function StatusTag(props: { status: string }) {
       break;
     case Status.confirmed:
       color = '#00EE00';
-      statusString = 'xác nhận';
+      statusString = 'Xác nhận';
       break;
     case Status.completed:
       color = '#6699FF';
@@ -34,8 +35,18 @@ function StatusTag(props: { status: string }) {
       break;
   }
   return (
-    <div>
+    <div style={{ display: 'flex' }}>
       <Tag color={color}>{statusString}</Tag>
+      {status === Status.confirmed && (
+        <Popconfirm
+          title="Chuyển trạng thái bắt đầu khám?"
+          onConfirm={onClick}
+          okText="Có"
+          cancelText="Không"
+        >
+          <DoubleRightOutlined />
+        </Popconfirm>
+      )}
     </div>
   );
 }

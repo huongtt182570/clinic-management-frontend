@@ -3,11 +3,13 @@ import {
   IAddRelationship,
   IBookAppointment,
   IChangePassword,
+  IChangeStatus,
   IGetList,
   ILogin,
   IReasonCancel,
   IService,
   IUpdateDoctor,
+  IUpdateHistory,
 } from '../../pages/model/model';
 import { IChangeInfo } from '../../pages/model/patientModel';
 import fetchHandler, { API_URL } from './axios';
@@ -78,15 +80,33 @@ export const getAllAppointment = (body: IGetList) => {
     `${API_URL}/appointment/all?page=${body.page}&pageSize=${body.pageSize}`
   );
 };
+export const getHistoryDoctor = (body: IGetList) => {
+  return fetchHandler.get(
+    `${API_URL}/doctor/medical-histories?page=${body.page}&pageSize=${body.pageSize}`
+  );
+};
+
+//api doctor
+export const getListPendingAppointment = (body: IGetList) => {
+  return fetchHandler.get(
+    `${API_URL}/doctor/appointments?page=${body.page}&pageSize=${body.pageSize}`
+  );
+};
+
 export const getAllHistory = (body: IGetList) => {
   return fetchHandler.get(
     `${API_URL}/medical-history/all?page=${body.page}&pageSize=${body.pageSize}`
   );
 };
 
-//api doctor
-export const getListPendingAppointment = () => {
-  return fetchHandler.get(`${API_URL}/doctor/appointments`);
+export const changeAppointment = (body: IChangeStatus) => {
+  return fetchHandler.put(`${API_URL}/doctor/appointment/${body.id}`, {
+    status: body.status,
+    reason: body.reason,
+  });
+};
+export const updateHistory = (body: IUpdateHistory) => {
+  return fetchHandler.post(`${API_URL}/medical-history`, body);
 };
 
 //api patient
@@ -142,4 +162,7 @@ export default {
   addRelationship,
   getAllAppointment,
   getAllHistory,
+  changeAppointment,
+  updateHistory,
+  getHistoryDoctor,
 };
