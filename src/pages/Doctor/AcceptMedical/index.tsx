@@ -220,7 +220,7 @@ const AcceptMedical: React.FC<AcceptMedicalProps> = () => {
           <div>
             <Table
               dataSource={listHistory?.filter(
-                (item) => item.patientId === selectedPatient.id
+                (item) => item.patientId === selectedPatient.patientId
               )}
               columns={detailColumn}
               pagination={false}

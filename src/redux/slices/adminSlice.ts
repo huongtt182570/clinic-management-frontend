@@ -146,10 +146,12 @@ export const adminSlice = createSlice({
           id: item.id,
           patientName: item.patient.fullname,
           doctorName: item.doctor.user.fullname,
+          doctorId: item.doctorId,
           patientPhone: item.patient.phone,
           status: item.status,
           service: item.service.name,
           reasonCanceled: item.reasonCanceled || '',
+          startTime: formatDate(item.startTime),
         }));
         state.listAppointment = appointments || [];
       })
