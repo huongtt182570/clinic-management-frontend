@@ -1,16 +1,7 @@
-import {
-  Button,
-  DatePicker,
-  Form,
-  Input,
-  Modal,
-  Select,
-  Table,
-  notification,
-} from 'antd';
+import { Button, Form, Input, Modal, Select, Table, notification } from 'antd';
 import React, { useEffect, useState } from 'react';
 import StatusTag from '../../../components/common/StatusTag';
-import { renderGender } from '../../../components/common/function';
+import { formatDate, renderGender } from '../../../components/common/function';
 import {
   changeAppointmentAsync,
   getHistoryDoctorAsync,
@@ -176,7 +167,8 @@ const DoctorAppointment: React.FC = () => {
         updateHistoryAsync({
           ...value,
           patientId,
-          dischargeDate: form.getFieldValue('admissionDate'),
+          admissionDate: new Date(),
+          dischargeDate: new Date(),
         })
       );
       if (res?.payload?.success) {
@@ -271,17 +263,8 @@ const DoctorAppointment: React.FC = () => {
           >
             <Input />
           </Form.Item>
-          <Form.Item
-            label="Ngày khám"
-            name="admissionDate"
-            rules={[
-              {
-                required: true,
-                message: 'Bạn chưa điền ngày khám!',
-              },
-            ]}
-          >
-            <DatePicker />
+          <Form.Item label="Ngày khám" name="admissionDate">
+            <div>{formatDate(new Date())}</div>
           </Form.Item>
         </Form>
       </Modal>

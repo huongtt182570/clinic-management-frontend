@@ -11,14 +11,17 @@ import {
   notification,
 } from 'antd';
 import React, { useEffect, useState } from 'react';
+import StatusTag from '../../../components/common/StatusTag';
 import { renderGender } from '../../../components/common/function';
 import {
   addDoctorAsync,
   deleteDoctorAsync,
+  getAllAppointmentAsync,
   getListDoctorAdmin,
   resetListDoctorAdmin,
   updateDoctorAsync,
 } from '../../../redux/slices/adminSlice';
+import { Status } from '../../enum';
 import { useAppDispatch, useAppSelector } from '../../hook';
 
 interface Doctor {
@@ -37,17 +40,20 @@ const AddDoctor: React.FC = () => {
         pageSize: 10,
       })
     );
+    dispatch(getAllAppointmentAsync({ page: 1, pageSize: 100 }));
     return () => {
       dispatch(resetListDoctorAdmin());
     };
   }, []);
-  const { listDoctor = [] } = useAppSelector((state) => state.admin);
+  const { listDoctor = [], listAppointment = [] } = useAppSelector(
+    (state) => state.admin
+  );
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [form] = Form.useForm();
   // const [newDoctor, setNewDoctor] = useState<IAddDoctor>();
 
   const [isEdit, setIsEdit] = useState(false);
-
+  const [doctorId, setDoctorId] = useState<number>(0);
   const handleDelete = async (key: number) => {
     const res = await dispatch(deleteDoctorAsync(key));
     if (res?.payload?.success) {
@@ -57,20 +63,6 @@ const AddDoctor: React.FC = () => {
       notification.error({ message: 'Lỗi xảy ra khi xoá bác sĩ.' });
     }
   };
-
-  const dataSource = [
-    {
-      key: '1',
-      patientName: 'John Doe',
-      phoneNumber: '1234567890',
-      gender: 'Male',
-      email: 'johndoe@example.com',
-      medicalHistory: 'Cough and fever',
-      appointmentHistory: '2024-02-14',
-      appointmentStatus: 'Waiting',
-    },
-    // Thêm dữ liệu khác nếu cần
-  ];
 
   const [modalVisible, setModalVisible] = useState<boolean>(false);
   const columns = [
@@ -92,7 +84,16 @@ const AddDoctor: React.FC = () => {
       title: 'Lịch trình',
       dataIndex: 'appointmentDate',
       key: 'appointmentDate',
-      render: () => <a onClick={() => setModalVisible(true)}>Chi tiết</a>,
+      render: (_: any, record: any) => (
+        <a
+          onClick={() => {
+            setModalVisible(true);
+            setDoctorId(record.id);
+          }}
+        >
+          Chi tiết
+        </a>
+      ),
     },
     {
       title: 'Hành động',
@@ -204,7 +205,7 @@ const AddDoctor: React.FC = () => {
             name="email"
             rules={[{ required: true, message: 'Bạn chưa điền email!' }]}
           >
-            <Input disabled={isEdit} />
+            <Input />
           </Form.Item>
           <Form.Item
             label="Địa chỉ"
@@ -281,26 +282,38 @@ const AddDoctor: React.FC = () => {
       >
         {/* Form và bảng thông tin */}
         <Table
-          dataSource={[dataSource[0]]} // Dùng [dataSource[0]] để chỉ hiển thị thông tin cho bệnh nhân đầu tiên trong ví dụ
+          dataSource={listAppointment.filter(
+            (item) =>
+              item.doctorId === doctorId &&
+              (item.status === Status.confirmed ||
+                item.status === Status.inprogress)
+          )} // Dùng [dataSource[0]] để chỉ hiển thị thông tin cho bệnh nhân đầu tiên trong ví dụ
           columns={[
             {
               title: 'Tên bệnh nhân',
+              dataIndex: 'patientName',
+              key: 'patientName',
             },
             {
               title: 'Số điện thoại bệnh nhân',
+              dataIndex: 'patientPhone',
+              key: 'patientPhone',
             },
             {
               title: 'Dịch vụ khám',
-              dataIndex: 'serviceName',
-              key: 'serviceName',
+              dataIndex: 'service',
+              key: 'service',
             },
             {
               title: 'Thời gian khám',
-              dataIndex: 'appointmentTime',
-              key: 'appointmentTime',
+              dataIndex: 'startTime',
+              key: 'startTime',
             },
             {
               title: 'Tình trạng khám',
+              dataIndex: 'status',
+              key: 'status',
+              render: (status: string) => <StatusTag status={status} />,
             },
           ]}
         />
